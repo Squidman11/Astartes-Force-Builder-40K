@@ -2,7 +2,7 @@ const masterUnits = [
   { id: "guilliman", name: "Roboute Guilliman", role: "HQ", points: 415, isEpicHero: true, wargear: { weapons: ["Hand of Dominion & Emperor's Sword"] } },
   { id: "calgar", name: "Marneus Calgar", role: "HQ", points: 180, isEpicHero: true, wargear: { bodyguard: ["Marneus Calgar with 2 Victrix Guard"] } },
   { id: "captain_titus", name: "Captain Titus", role: "HQ", points: 115, isEpicHero: true, wargear: { weapons: ["Master-crafted bolt rifle & heavy bolt pistol"] } },
-  { id: "cap", name: "Captain", role: "HQ", points: 90, wargear: { pistol: ["Heavy Bolt Pistol", "Plasma Pistol"], melee: ["Power Fist", "Relic Weapon"] } },
+  { id: "cap", name: "Captain", role: "HQ", points: 90, wargear: { pistol: ["Heavy Bolt Pistol", "Plasma Pistol"], melee: ["Power Fist", "Relic Weapon"], shield: ["", "Relic Shield"] } },
   { id: "cap_gravis", name: "Captain in Gravis Armour", role: "HQ", points: 90, wargear: { ranged: ["Boltstorm Gauntlet", "Master-crafted Heavy Bolt Rifle"], melee: ["Power Fist"] } },
   { id: "cap_phobos", name: "Captain in Phobos Armour", role: "HQ", points: 75, wargear: { pistol: ["Bolt Pistol", "Special Issue Bolt Pistol"], melee: ["Combat Knife", "Paired Combat Blades"] } },
   { id: "cap_term", name: "Captain in Terminator Armour", role: "HQ", points: 90, wargear: { weapon1: ["Relic Weapon", "Power Fist", "Chainfist"], weapon2: ["Storm Bolter", "Combi-weapon"] } },
@@ -328,6 +328,7 @@ const detachments = {
     enhancements: [
       { name: "Adept of the Codex", points: 20 },
       { name: "Artificer Armour", points: 15 },
+      { name: "Fire Discipline", points: 30 },
       { name: "Laurels of Triumph", points: 20 },
       { name: "Standard of the Emperor Ascendant", points: 25 }
     ]
@@ -885,15 +886,6 @@ function selectRosterItem(instanceId) {
   renderConfigurator();
 }
 
-function updateWargearSelection(key, val) {
-  const item = currentRoster.find(i => i.instanceId === selectedInstanceId);
-  if (item) {
-    item.selections[key] = val;
-    renderRoster();
-    renderRelativeInfo(item);
-  }
-}
-
 function updateWarlord(instanceId, isWarlord) {
   const selectedItem = currentRoster.find(item => item.instanceId === instanceId);
   if (!selectedItem || !selectedItem.canBeWarlord) return;
@@ -982,13 +974,9 @@ function renderRoster() {
       div.className = "roster-item" + (isSelected ? " selected" : "");
       div.addEventListener("click", () => selectRosterItem(item.instanceId));
 
-      const wargearStrings = Object.entries(item.selections).map(([k, v]) => v).join(", ");
-      const displayKit = wargearStrings || 'Standard';
-
       div.innerHTML = 
         '<h3>' + item.name + '</h3>' +
         (item.isWarlord ? '<span class="warlord-badge">WARLORD</span>' : '') +
-        '<div class="wargear-summary">Kit: ' + displayKit + '</div>' +
         (item.enhancement ? '<div class="enhancement-summary">' + item.enhancement.name + ' (+' + enhancementPoints + ' pts)</div>' : '') +
         '<div class="actions">' +
           '<span style="font-size: 0.8rem; font-weight:bold; align-self:center; color: var(--accent); margin-right:auto;">' + itemTotal + ' pts</span>' +
@@ -1084,7 +1072,7 @@ function renderRelativeInfo(item) {
     unitDescription || "This unit's special rules are not reproduced here. Check its current datasheet for abilities and exact profiles."
   );
 
-  const selectedOptions = Object.entries(item.selections || {});
+  const selectedOptions = Object.entries(item.selections || {}).filter(([, option]) => option);
   if (selectedOptions.length > 0) {
     addInfoText(relativeInfoContentEl, "h3", "Selected wargear");
     const optionsList = document.createElement("ul");
@@ -1112,7 +1100,7 @@ function renderConfigurator() {
 
   const activeItem = currentRoster.find(i => i.instanceId === selectedInstanceId);
   if (!activeItem) {
-    configuratorWorkspaceEl.innerHTML = '<p class="placeholder-text">Select an active squad/character in your roster to swap wargear choices dynamically.</p>';
+    configuratorWorkspaceEl.innerHTML = '<p class="placeholder-text">Select an active unit to review its wargear and assign an enhancement.</p>';
     renderRelativeInfo(null);
     return;
   }
@@ -1147,38 +1135,11 @@ function renderConfigurator() {
     configuratorWorkspaceEl.appendChild(enhancementDiv);
   }
 
-  const fields = Object.entries(activeItem.wargearOptions);
-  if (fields.length === 0) {
-    if (!activeItem.canTakeEnhancement) {
-      configuratorWorkspaceEl.innerHTML += '<p class="placeholder-text" style="margin-top:10px;">This unit has fixed standard wargear loadouts.</p>';
-    }
-    return;
-  }
-
-  fields.forEach(([slotKey, choices]) => {
-    const optionDiv = document.createElement("div");
-    optionDiv.className = "wargear-option";
-
-    const label = document.createElement("label");
-    label.innerText = slotKey.replace("_", " ").toUpperCase();
-
-    const select = document.createElement("select");
-    select.addEventListener("change", (e) => updateWargearSelection(slotKey, e.target.value));
-
-    choices.forEach(choice => {
-      const opt = document.createElement("option");
-      opt.value = choice;
-      opt.innerText = choice;
-      if (activeItem.selections[slotKey] === choice) {
-        opt.selected = true;
-      }
-      select.appendChild(opt);
-    });
-
-    optionDiv.appendChild(label);
-    optionDiv.appendChild(select);
-    configuratorWorkspaceEl.appendChild(optionDiv);
-  });
+  const wargearNote = document.createElement("p");
+  wargearNote.className = "placeholder-text";
+  wargearNote.style.marginTop = "10px";
+  wargearNote.textContent = "Wargear loadouts are shown for reference and cannot be changed here.";
+  configuratorWorkspaceEl.appendChild(wargearNote);
 }
 
 function clearRoster() {
@@ -1221,7 +1182,7 @@ function exportData(type) {
       if (u.enhancement) {
         textOutput += "   - Enhancement: " + u.enhancement.name + " (" + enhancementPoints + " pts)\n";
       }
-      Object.entries(u.selections).forEach(([k, v]) => {
+      Object.entries(u.selections).filter(([, value]) => value).forEach(([k, v]) => {
         textOutput += "   - " + k.replace('_',' ') + ": " + v + "\n";
       });
       textOutput += "\n";
