@@ -206,13 +206,6 @@ header p {
   accent-color: var(--accent);
 }
 
-.roster-item .wargear-summary { 
-  font-size: 0.75rem; 
-  color: var(--text-muted); 
-  margin-top: 5px; 
-  font-style: italic; 
-}
-
 .roster-item .enhancement-summary {
   margin-top: 5px;
   color: var(--accent);
@@ -397,14 +390,14 @@ button:hover {
 .points-alert { color: var(--danger); }
 .points-good { color: var(--success); }
 
-.wargear-option { 
+.enhancement-option { 
   margin-bottom: 12px; 
   background: var(--inner-bg); 
   padding: 8px; 
   border-radius: 4px; 
 }
 
-.wargear-option label { 
+.enhancement-option label { 
   display: block; 
   font-size: 0.85rem; 
   font-weight: bold; 
@@ -412,7 +405,7 @@ button:hover {
   color: var(--accent); 
 }
 
-.wargear-option select { 
+.enhancement-option select { 
   width: 100%; 
   padding: 6px; 
   background: var(--panel-bg); 
