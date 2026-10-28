@@ -390,14 +390,14 @@ button:hover {
 .points-alert { color: var(--danger); }
 .points-good { color: var(--success); }
 
-.enhancement-option { 
+.config-option { 
   margin-bottom: 12px; 
   background: var(--inner-bg); 
   padding: 8px; 
   border-radius: 4px; 
 }
 
-.enhancement-option label { 
+.config-option label { 
   display: block; 
   font-size: 0.85rem; 
   font-weight: bold; 
@@ -405,7 +405,7 @@ button:hover {
   color: var(--accent); 
 }
 
-.enhancement-option select { 
+.config-option select { 
   width: 100%; 
   padding: 6px; 
   background: var(--panel-bg); 
