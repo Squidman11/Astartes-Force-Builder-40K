@@ -13,10 +13,16 @@
     <p>Space Marine Roster Sandbox</p>
   </header>
 
+  <nav class="mobile-nav" aria-label="Army builder sections">
+    <button type="button" class="mobile-nav-btn" data-panel="panel-catalog" aria-selected="false">Armoury</button>
+    <button type="button" class="mobile-nav-btn active" data-panel="panel-roster" aria-selected="true">Roster</button>
+    <button type="button" class="mobile-nav-btn" data-panel="panel-options" aria-selected="false">Options</button>
+  </nav>
+
   <div class="main-layout">
     
     <!-- 1. AVAILABLE UNITS SELECTION -->
-    <div class="panel">
+    <div class="panel" id="panel-catalog">
       <h2>Armoury Catalog</h2>
       <!-- Insert this inside your Armoury Catalog panel, right under <h2>Armoury Catalog</h2> -->
         <div class="filter-tabs">
@@ -29,13 +35,32 @@
         <button class="filter-btn" data-role="EpicHero">EPIC HEROES</button>
         </div>
       <input type="text" id="searchBar" class="search-box" placeholder="Filter units by name...">
-      <p class="points-source">Unit and enhancement points: <a href="https://mfm.warhammer-community.com/en/space-marines" target="_blank" rel="noopener noreferrer">Munitorum Field Manual</a> (30 September 2026). Available squad sizes use their listed points costs; repeated-unit cost tiers are not modeled.</p>
+      <div class="catalog-controls">
+        <label for="catalogSort">Sort by</label>
+        <select id="catalogSort">
+          <option value="name">Name</option>
+          <option value="points-asc">Points: low to high</option>
+          <option value="points-desc">Points: high to low</option>
+        </select>
+        <label class="catalog-toggle"><input type="checkbox" id="hideAddedUnits"> Hide units in roster</label>
+      </div>
+      <p class="points-source">Unit and enhancement points: <a href="https://mfm.warhammer-community.com/en/space-marines" target="_blank" rel="noopener noreferrer">Munitorum Field Manual</a> (30 September 2026). Repeated-unit cost tiers are not modeled.</p>
       <div class="scrollable-list" id="catalogList"></div>
     </div>
 
     <!-- 2. ARMY ROSTER OVERVIEW -->
-    <div class="panel">
+    <div class="panel" id="panel-roster">
       <h2>Battle-Force Roster</h2>
+      <div class="stats-bar" id="statsBar">
+        Points: <span id="ptsTotal" class="points-good">0</span> / <span id="ptsLimit">2000</span> | Units: <span id="unitTotal">0</span>
+      </div>
+      <section class="current-army-box" aria-labelledby="currentArmyHeading">
+        <div class="current-army-heading">
+          <h3 id="currentArmyHeading">Current Army</h3>
+          <span id="currentArmySummary" aria-live="polite">0 units | 0 / 2000 pts</span>
+        </div>
+        <div class="scrollable-list" id="rosterList"></div>
+      </section>
       <div class="roster-select-grid">
         <div class="detachment-field">
           <label for="chapterSelect">Space Marine Chapter</label>
@@ -60,23 +85,43 @@
           <button type="button" id="applyCustomLimit">Apply</button>
         </div>
       </div>
-      <div class="stats-bar" id="statsBar">
-        Points: <span id="ptsTotal" class="points-good">0</span> / <span id="ptsLimit">2000</span> | Units: <span id="unitTotal">0</span>
-      </div>
       <div id="rosterRequirements" class="roster-requirements" role="status" aria-live="polite"></div>
-      <div class="scrollable-list" id="rosterList"></div>
-      
+      <div class="roster-library">
+        <label for="savedRosterSelect">Saved rosters</label>
+        <select id="savedRosterSelect" aria-label="Saved rosters">
+          <option value="">No saved rosters</option>
+        </select>
+        <div class="roster-library-actions">
+          <button type="button" id="btnSaveRoster">Save Current</button>
+          <button type="button" id="btnLoadRoster">Load</button>
+          <button type="button" id="btnDuplicateRoster">Duplicate</button>
+          <button type="button" id="btnDeleteRoster" class="btn-danger">Delete Saved</button>
+        </div>
+        <p id="rosterLibraryHint" class="roster-library-hint">Save Current asks for a roster name. Save a roster to enable Load, Duplicate, and Delete.</p>
+      </div>
+      <div class="history-controls" role="group" aria-label="Roster history">
+        <button type="button" id="btnUndo" disabled>Undo</button>
+        <button type="button" id="btnRedo" disabled>Redo</button>
+      </div>
+      <div class="roster-notes-field">
+        <label for="rosterNotes">Roster notes</label>
+        <textarea id="rosterNotes" rows="2" placeholder="Plan, reminders, or other notes for this roster..."></textarea>
+        <p id="printRosterNotes" class="print-only"></p>
+      </div>
+      <p id="draftStatus" class="draft-status" role="status" aria-live="polite"></p>
+      <div id="printRosterMeta" class="print-roster-meta"></div>
       <div class="utility-grid">
         <button id="btnExportJson" class="btn-accent">Export JSON</button>
         <button id="btnExportText" class="btn-accent">Export Text</button>
         <button id="btnImportJson">Import JSON</button>
-        <button id="btnClearRoster" class="btn-danger">Clear List</button>
+        <button id="btnPrintRoster">Print Roster</button>
+        <button id="btnClearRoster" class="btn-danger">New Roster</button>
       </div>
       <input type="file" id="importFile" style="display:none" accept=".json">
     </div>
 
     <!-- 3. UNIT OPTIONS -->
-    <div class="panel customizer-panel">
+    <div class="panel customizer-panel" id="panel-options">
       <section class="relative-info" id="relativeInfo" aria-live="polite">
         <h2>Unit &amp; Rules Info</h2>
         <div id="relativeInfoContent">
@@ -88,14 +133,30 @@
           <small>Quick playstyle summary; check the current detachment rules for exact abilities.</small>
         </details>
       </section>
-      <h2>Unit Configuration</h2>
+      <h2>Unit Options</h2>
       <div id="configuratorWorkspace" class="workspace">
-        <p class="placeholder-text">Select an active unit to configure its squad size or assign an enhancement.</p>
+        <p class="placeholder-text">Select an active unit to assign an enhancement.</p>
       </div>
     </div>
 
   </div>
 
+  <div id="appDialog" class="app-dialog" hidden>
+    <section class="app-dialog-card" role="dialog" aria-modal="true" aria-labelledby="appDialogMessage">
+      <p id="appDialogMessage"></p>
+      <label id="appDialogInputLabel" class="app-dialog-input-label" hidden>
+        <span id="appDialogInputLabelText"></span>
+        <input id="appDialogInput" type="text" autocomplete="off">
+      </label>
+      <p id="appDialogError" class="app-dialog-error" role="alert" hidden></p>
+      <div class="app-dialog-actions">
+        <button type="button" id="appDialogConfirm">Continue</button>
+        <button type="button" id="appDialogCancel" class="btn-secondary">Cancel</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

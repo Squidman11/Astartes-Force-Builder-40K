@@ -58,6 +58,131 @@ header p {
   margin: 0 auto; 
 }
 
+.mobile-nav {
+  display: none;
+}
+
+.roster-library {
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--inner-bg);
+}
+
+.roster-library > label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: bold;
+}
+
+.roster-library select {
+  width: 100%;
+  padding: 6px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-muted);
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.roster-library-hint {
+  margin: 5px 0 0;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.roster-library-actions,
+.history-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.roster-library-actions button,
+.history-controls button {
+  flex: 1;
+  min-width: 62px;
+  padding: 5px;
+  font-size: 0.7rem;
+}
+
+.history-controls {
+  margin: 0 0 8px;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.app-dialog[hidden],
+.app-dialog-input-label[hidden],
+.app-dialog-error[hidden] {
+  display: none;
+}
+
+.app-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgb(0 0 0 / 72%);
+}
+
+.app-dialog-card {
+  width: min(100%, 420px);
+  padding: 18px;
+  border: 1px solid var(--border-muted);
+  border-radius: 8px;
+  background: var(--panel-bg);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 45%);
+}
+
+.app-dialog-card > p {
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+
+.app-dialog-input-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.app-dialog-input-label input {
+  width: 100%;
+  margin-top: 5px;
+  padding: 8px;
+  border: 1px solid var(--border-muted);
+  border-radius: 4px;
+  background: var(--inner-bg);
+  color: var(--text);
+}
+
+.app-dialog-error {
+  color: var(--danger);
+  font-size: 0.8rem;
+}
+
+.app-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-secondary {
+  background: var(--border-muted);
+}
+
 @media (max-width: 1100px) { 
   .main-layout { grid-template-columns: 1fr; } 
 }
@@ -76,6 +201,10 @@ header p {
   flex-direction: column; 
   height: calc(100vh - 140px); 
   min-height: 600px; 
+}
+
+#panel-roster {
+  overflow-y: auto;
 }
 
 .panel h2 { 
@@ -99,6 +228,39 @@ header p {
   color: white; 
   border-radius: 4px; 
   margin-bottom: 10px; 
+}
+
+.catalog-controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px 8px;
+  margin-bottom: 10px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.catalog-controls select,
+.roster-notes-field textarea,
+.unit-notes-field textarea {
+  width: 100%;
+  padding: 6px;
+  background: var(--inner-bg);
+  border: 1px solid var(--border-muted);
+  border-radius: 4px;
+  color: var(--text);
+  font: inherit;
+}
+
+.catalog-toggle {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.catalog-toggle input {
+  accent-color: var(--accent);
 }
 
 .filter-tabs {
@@ -138,6 +300,42 @@ header p {
   padding-right: 4px; 
 }
 
+.current-army-box {
+  display: flex;
+  flex: 0 0 280px;
+  flex-direction: column;
+  min-height: 120px;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--inner-bg);
+}
+
+.current-army-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.current-army-heading h3 {
+  color: var(--accent);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.current-army-heading span {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  text-align: right;
+}
+
+#rosterList {
+  min-height: 0;
+}
+
 .unit-card { 
   background: var(--inner-bg); 
   border-left: 4px solid var(--primary); 
@@ -165,17 +363,19 @@ header p {
 }
 
 .roster-item { 
-  background: var(--inner-bg); 
-  border-left: 4px solid var(--accent); 
+  background: linear-gradient(135deg, #1a2740 0%, var(--inner-bg) 72%);
+  border: 1px solid var(--border-muted);
+  border-left: 4px solid var(--accent);
   padding: 10px; 
-  border-radius: 4px; 
+  border-radius: 6px;
   position: relative; 
   cursor: pointer;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 3%);
 }
 
 .roster-item.selected { 
   border-color: var(--success); 
-  background: var(--selected-bg); 
+  background: linear-gradient(135deg, #19334a 0%, var(--selected-bg) 72%);
 }
 
 .roster-item h3 { 
@@ -211,6 +411,12 @@ header p {
   color: var(--accent);
   font-size: 0.75rem;
   font-weight: bold;
+}
+
+.roster-item .attachment-summary {
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
 }
 
 .actions { 
@@ -260,6 +466,11 @@ button:hover {
   line-height: 1.4;
 }
 
+.roster-requirements.has-warnings {
+  border-left-color: var(--accent);
+  color: var(--accent);
+}
+
 .roster-requirements.has-errors {
   border-left-color: var(--danger);
   color: var(--danger);
@@ -267,6 +478,73 @@ button:hover {
 
 .roster-requirements ul {
   padding-left: 18px;
+}
+
+.roster-requirements .check-list li {
+  margin: 2px 0;
+}
+
+.roster-requirements .check-pass {
+  color: var(--success);
+}
+
+.roster-requirements .check-warning {
+  color: var(--accent);
+}
+
+.roster-requirements .check-error {
+  color: var(--danger);
+}
+
+.check-disclaimer {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.draft-status {
+  min-height: 1em;
+  margin: -5px 0 7px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.draft-status.has-error {
+  color: var(--danger);
+}
+
+.roster-notes-field,
+.unit-notes-field {
+  margin-bottom: 10px;
+}
+
+.roster-notes-field label,
+.unit-notes-field label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: bold;
+}
+
+.roster-notes-field textarea,
+.unit-notes-field textarea {
+  min-height: 48px;
+  resize: vertical;
+  font-size: 0.75rem;
+}
+
+.roster-item-note {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+}
+
+.print-only,
+.print-roster-meta {
+  display: none;
 }
 
 .detachment-field {
@@ -390,14 +668,14 @@ button:hover {
 .points-alert { color: var(--danger); }
 .points-good { color: var(--success); }
 
-.config-option { 
+.enhancement-option { 
   margin-bottom: 12px; 
   background: var(--inner-bg); 
   padding: 8px; 
   border-radius: 4px; 
 }
 
-.config-option label { 
+.enhancement-option label { 
   display: block; 
   font-size: 0.85rem; 
   font-weight: bold; 
@@ -405,13 +683,52 @@ button:hover {
   color: var(--accent); 
 }
 
-.config-option select { 
+.enhancement-option select { 
   width: 100%; 
   padding: 6px; 
   background: var(--panel-bg); 
   border: 1px solid var(--border-muted); 
   color: white; 
   border-radius: 4px; 
+}
+
+.leader-attachment {
+  margin-bottom: 12px;
+  padding: 8px;
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+  background: var(--inner-bg);
+}
+
+.leader-attachment label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: bold;
+}
+
+.leader-attachment select {
+  width: 100%;
+  padding: 6px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-muted);
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.leader-attachment small {
+  display: block;
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.leader-attachment-status {
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
 }
 
 .utility-grid { 
@@ -476,4 +793,196 @@ button:hover {
   font-size: 0.85rem; 
   text-align: center; 
   margin-top: 40px; 
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  body {
+    padding: 0;
+    background: #fff;
+    color: #111;
+  }
+
+  header {
+    margin-bottom: 14px;
+    border-bottom-color: #222;
+  }
+
+  header h1,
+  header p {
+    color: #111;
+  }
+
+  .main-layout {
+    display: block;
+    max-width: none;
+  }
+
+  .panel,
+  .main-layout > .panel:nth-child(1),
+  .main-layout > .panel:nth-child(3) {
+    display: none;
+  }
+
+  .main-layout > .panel:nth-child(2) {
+    display: flex;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    background: #fff;
+    color: #111;
+  }
+
+  .panel h2,
+  .stats-bar,
+  .roster-item {
+    color: #111;
+  }
+
+  .stats-bar,
+  .roster-item,
+  .print-roster-meta {
+    border: 1px solid #999;
+    background: #fff;
+  }
+
+  .roster-select-grid,
+  .game-mode-field,
+  .roster-library,
+  .history-controls,
+  .roster-requirements,
+  .draft-status,
+  .roster-notes-field textarea,
+  .unit-notes-field textarea,
+  .actions,
+  .utility-grid,
+  #importFile,
+  .mobile-nav {
+    display: none !important;
+  }
+
+  .print-roster-meta {
+    display: block;
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .print-only {
+    display: block;
+    color: #333;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+  }
+
+  .roster-notes-field {
+    margin-bottom: 10px;
+    color: #111;
+  }
+
+  .roster-notes-field label,
+  .unit-notes-field label {
+    color: #111;
+  }
+
+  .roster-list,
+  #rosterList {
+    overflow: visible;
+  }
+
+  .current-army-box {
+    flex: none;
+    min-height: 0;
+    border-color: #999;
+    background: #fff;
+  }
+
+  .current-army-heading h3,
+  .current-army-heading span {
+    color: #111;
+  }
+
+  .roster-item {
+    margin-bottom: 8px;
+    break-inside: avoid;
+  }
+
+  .roster-item-note {
+    display: none;
+  }
+
+  .roster-item .enhancement-summary,
+  .roster-item .attachment-summary,
+  .warlord-badge {
+    color: #111;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  body {
+    padding: 12px;
+  }
+
+  header {
+    margin-bottom: 12px;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .mobile-nav {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin: 0 auto 12px;
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--panel-bg);
+  }
+
+  .mobile-nav-btn {
+    min-height: 40px;
+    background: var(--inner-bg);
+  }
+
+  .mobile-nav-btn.active {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .main-layout {
+    display: block;
+  }
+
+  .main-layout > .panel {
+    display: none;
+    height: calc(100dvh - 150px);
+    min-height: 480px;
+    padding: 12px;
+  }
+
+  .main-layout > .panel.mobile-panel-active {
+    display: flex;
+  }
+
+  .scrollable-list {
+    min-height: 180px;
+  }
+
+  .current-army-box {
+    flex-basis: 240px;
+    min-height: 180px;
+  }
+
+  .roster-library-actions button {
+    min-height: 36px;
+  }
 }

@@ -1,157 +1,3 @@
-const masterUnits = [
-  { id: "guilliman", name: "Roboute Guilliman", role: "HQ", points: 415, isEpicHero: true, wargear: { weapons: ["Hand of Dominion & Emperor's Sword"] } },
-  { id: "calgar", name: "Marneus Calgar", role: "HQ", points: 180, isEpicHero: true, wargear: { bodyguard: ["Marneus Calgar with 2 Victrix Guard"] } },
-  { id: "captain_titus", name: "Captain Titus", role: "HQ", points: 115, isEpicHero: true, wargear: { weapons: ["Master-crafted bolt rifle & heavy bolt pistol"] } },
-  { id: "cap", name: "Captain", role: "HQ", points: 90, wargear: { pistol: ["Heavy Bolt Pistol", "Plasma Pistol"], melee: ["Power Fist", "Relic Weapon"], shield: ["", "Relic Shield"] } },
-  { id: "cap_gravis", name: "Captain in Gravis Armour", role: "HQ", points: 90, wargear: { ranged: ["Boltstorm Gauntlet", "Master-crafted Heavy Bolt Rifle"], melee: ["Power Fist"] } },
-  { id: "cap_phobos", name: "Captain in Phobos Armour", role: "HQ", points: 75, wargear: { pistol: ["Bolt Pistol", "Special Issue Bolt Pistol"], melee: ["Combat Knife", "Paired Combat Blades"] } },
-  { id: "cap_term", name: "Captain in Terminator Armour", role: "HQ", points: 90, wargear: { weapon1: ["Relic Weapon", "Power Fist", "Chainfist"], weapon2: ["Storm Bolter", "Combi-weapon"] } },
-  { id: "cap_jp", name: "Captain with Jump Pack", role: "HQ", points: 90, wargear: { weapon1: ["Bolt Pistol", "Plasma Pistol"], weapon2: ["Astartes Chainsword", "Power Fist", "Relic Blade"] } },
-  { id: "cap_bike", name: "Captain on Bike", role: "HQ", points: 110, wargear: { ranged: ["Twin Boltgun", "Combi-weapon"], melee: ["Power Weapon", "Thunder Hammer"] } },
-  { id: "chaplain", name: "Chaplain", role: "HQ", points: 60, wargear: { pistol: ["Bolt Pistol", "Plasma Pistol"], melee: ["Crozius Arcanum"] } },
-  { id: "chap_term", name: "Chaplain in Terminator Armour", role: "HQ", points: 75, wargear: { ranged: ["Storm Bolter", "Combi-weapon"], melee: ["Crozius Arcanum"] } },
-  { id: "chap_bike", name: "Chaplain on Bike", role: "HQ", points: 75, wargear: { ranged: ["Twin Boltgun", "Combi-weapon"], melee: ["Crozius Arcanum"] } },
-  { id: "chap_jp", name: "Chaplain with Jump Pack", role: "HQ", points: 75, wargear: { pistol: ["Bolt Pistol", "Plasma Pistol"], melee: ["Crozius Arcanum"] } },
-  { id: "librarian", name: "Librarian", role: "HQ", points: 75, wargear: { pistol: ["Bolt Pistol", "Plasma Pistol"], melee: ["Force Weapon"] } },
-  { id: "libr_ph", name: "Librarian in Phobos Armour", role: "HQ", points: 75, wargear: { weapon: ["Force Weapon"], pistol: ["Bolt Pistol"] } },
-  { id: "libr_term", name: "Librarian in Terminator Armour", role: "HQ", points: 80, wargear: { ranged: ["Storm Bolter", "Combi-weapon"], melee: ["Force Weapon"] } },
-  { id: "lieutenant", name: "Lieutenant", role: "HQ", points: 50, wargear: { ranged: ["Bolt Pistol", "Heavy Bolt Pistol"], melee: ["Power Weapon", "Power Fist"] } },
-  { id: "lieut_ph", name: "Lieutenant in Phobos Armour", role: "HQ", points: 40, wargear: { ranged: ["Bolt Pistol", "Occulus Bolt Carbine"], melee: ["Combat Knife"] } },
-  { id: "lieut_cb", name: "Lieutenant with Combi-weapon", role: "HQ", points: 85, wargear: { weapon: ["Combi-weapon"] } },
-  { id: "apoth", name: "Apothecary", role: "HQ", points: 45, wargear: { pistol: ["Bolt Pistol"], melee: ["Astartes Chainsword"] } },
-  { id: "apoth_bi", name: "Apothecary Biologis", role: "HQ", points: 60, wargear: { pistol: ["Absolvor Bolt Pistol"] } },
-  { id: "ancient_term", name: "Ancient in Terminator Armour", role: "HQ", points: 75, wargear: { ranged: ["Storm Bolter", "Combi-weapon"], melee: ["Power Fist", "Chainfist"] } },
-  { id: "ancient", name: "Ancient", role: "HQ", points: 40, wargear: { weapons: ["Bolt Rifle & close combat weapon"] } },
-  { id: "bladeguard_ancient", name: "Bladeguard Ancient", role: "HQ", points: 70, wargear: { weapons: ["Heavy Bolt Pistol & close combat weapon"] } },
-  { id: "techmarine", name: "Techmarine", role: "HQ", points: 55, wargear: { pistol: ["Bolt Pistol"], melee: ["Omnissian Power Axe"] } },
-  { id: "judiciar", name: "Judiciar", role: "HQ", points: 50, wargear: { weapons: ["Executioner Relic Blade & Absolvor Bolt Pistol"] } },
-  { id: "iron_father_feirros", name: "Iron Father Feirros", role: "HQ", points: 85, isEpicHero: true, wargear: { weapons: ["Gorgon's Wrath & Harrowhand"] } },
-  { id: "tigris", name: "Chief Librarian Tigurius", role: "HQ", points: 115, isEpicHero: true, wargear: { weapons: ["Rod of Tigurius & bolt pistol"] } },
-  { id: "lysander", name: "Darnath Lysander", role: "HQ", points: 160, isEpicHero: true, wargear: { weapons: ["Fist of Dorn & Storm Shield"] } },
-  { id: "tor_garadon", name: "Tor Garadon", role: "HQ", points: 90, isEpicHero: true, wargear: { weapons: ["Artificer Grav-gun & Hand of Defiance"] } },
-  { id: "caanok_var", name: "Caanok Var", role: "HQ", points: 100, isEpicHero: true, wargear: { weapons: ["Master-crafted bolt rifle & power weapon"] } },
-  { id: "adrax_agatone", name: "Adrax Agatone", role: "HQ", points: 90, isEpicHero: true, wargear: { weapons: ["Drake-smiter & hand flamer"] } },
-  { id: "vulkan_hestan", name: "Vulkan He'stan", role: "HQ", points: 105, isEpicHero: true, wargear: { weapons: ["Spear of Vulkan & Gauntlet of the Forge"] }, chapter: "salamanders" },
-  { id: "aethon_shaan", name: "Aethon Shaan", role: "HQ", points: 105, isEpicHero: true, wargear: { weapons: ["Fang of the Ashen & twin lightning claws"] } },
-  { id: "kayvaan_shrike", name: "Kayvaan Shrike", role: "HQ", points: 95, isEpicHero: true, wargear: { weapons: ["Blackout & Raven's Talons"] } },
-  { id: "cato_sicarius", name: "Cato Sicarius", role: "HQ", points: 115, isEpicHero: true, wargear: { weapons: ["Talassarian Tempest Blade & bolt pistol"] } },
-  { id: "kaius_konorius", name: "Kaius Konorius", role: "HQ", points: 100, isEpicHero: true, wargear: { weapons: ["Master-crafted bolt rifle & power weapon"] } },
-  { id: "suboden_khan", name: "Suboden Khan", role: "HQ", points: 105, isEpicHero: true, wargear: { weapons: ["Moonfang & storm bolter"] } },
-  { id: "victrix_guard", name: "Victrix Honour Guard", role: "Infantry", points: 120, squadSizes: [{ models: 3, points: 120 }, { models: 6, points: 250 }], wargear: { weapons: ["Heavy Bolt Pistol & Victrix Power Sword"] } },
-  { id: "int_sq", name: "Intercessor Squad (5 models)", role: "Battleline", points: 85, squadSizes: [{ models: 5, points: 85 }, { models: 10, points: 170 }], wargear: { rifle: ["Bolt Rifle", "Auto Bolt Rifle", "Stalker Bolt Rifle"], upgrade: ["None", "Astartes Grenade Launcher"] } },
-  { id: "ass_int", name: "Assault Intercessor Squad (5 models)", role: "Battleline", points: 85, squadSizes: [{ models: 5, points: 85 }, { models: 10, points: 170 }], wargear: { sergeant: ["Astartes Chainsword", "Power Fist"], pistol: ["Heavy Bolt Pistol", "Plasma Pistol"] } },
-  { id: "hv_int", name: "Heavy Intercessor Squad (5 models)", role: "Battleline", points: 115, squadSizes: [{ models: 5, points: 115 }, { models: 10, points: 230 }], wargear: { primary: ["Heavy Bolt Rifle", "Hellstorm Bolt Rifle", "Executor Bolt Rifle"] } },
-  { id: "scout_sq", name: "Scout Squad (5 models)", role: "Infantry", points: 65, squadSizes: [{ models: 5, points: 65 }, { models: 10, points: 120 }], wargear: { loadout: ["Boltgun", "Astartes Shotgun", "Combat Knife", "Scout Sniper Rifle"] } },
-  { id: "aggressors", name: "Aggressor Squad (3 models)", role: "Infantry", points: 90, squadSizes: [{ models: 3, points: 90 }, { models: 6, points: 180 }], wargear: { weapons: ["Auto Boltstorm Gauntlets & Fragstorm Grenade Launcher", "Flamestorm Gauntlets"] } },
-  { id: "ass_jp", name: "Assault Intercessors with Jump Packs (5 models)", role: "Infantry", points: 95, squadSizes: [{ models: 5, points: 95 }, { models: 10, points: 190 }], wargear: { sergeant: ["Astartes Chainsword", "Power Fist"], pistol: ["Heavy Bolt Pistol", "Plasma Pistol"] } },
-  { id: "bg_vet", name: "Bladeguard Veteran Squad (3 models)", role: "Infantry", points: 90, squadSizes: [{ models: 3, points: 90 }, { models: 6, points: 180 }], wargear: { pistols: ["Heavy Bolt Pistol", "Plasma Pistol"], melee: ["Master-crafted Power Weapon"] } },
-  { id: "company_heroes", name: "Company Heroes", role: "Infantry", points: 125, wargear: { loadout: ["Standard Company Heroes configuration"] } },
-  { id: "desolation", name: "Desolation Squad (5 models)", role: "Infantry", points: 140, wargear: { launcher: ["Superfrag Rocket Launcher", "Superkrak Rocket Launcher"], sergeant: ["Vengor Launcher", "Bolt Pistol"] } },
-  { id: "eliminators", name: "Eliminator Squad (3 models)", role: "Infantry", points: 85, wargear: { rifles: ["Bolt Sniper Rifle", "Las Fusil"], sergeant: ["Instigator Bolt Carbine"] } },
-  { id: "eradicators", name: "Eradicator Squad (3 models)", role: "Infantry", points: 100, squadSizes: [{ models: 3, points: 100 }, { models: 6, points: 200, pointsBySelection: { weapons: { "Heavy Bolters": 215 } } }], wargear: { weapons: ["Melta Rifles", "Heavy Bolters"] } },
-  { id: "hellblasters", name: "Hellblaster Squad (5 models)", role: "Infantry", points: 115, squadSizes: [{ models: 5, points: 115 }, { models: 10, points: 230 }], wargear: { weapons: ["Plasma Incinerator", "Assault Plasma Incinerator", "Heavy Plasma Incinerator"] } },
-  { id: "infernus", name: "Infernus Squad (5 models)", role: "Infantry", points: 95, squadSizes: [{ models: 5, points: 95 }, { models: 10, points: 190 }], wargear: { weapons: ["Pyreblasters"] } },
-  { id: "infil_sq", name: "Infiltrator Squad (5 models)", role: "Infantry", points: 85, squadSizes: [{ models: 5, points: 85 }, { models: 10, points: 150 }], wargear: { communications: ["Helix Gauntlet", "Infiltrator Comms Array", "None"] } },
-  { id: "incursors", name: "Incursors Squad (5 models)", role: "Infantry", points: 90, squadSizes: [{ models: 5, points: 90 }, { models: 10, points: 170 }], wargear: { weapons: ["Occulus Bolt Carbines & paired combat blades"] } },
-  { id: "incept_sq", name: "Inceptor Squad (3 models)", role: "Infantry", points: 130, squadSizes: [{ models: 3, points: 130 }, { models: 6, points: 260 }], wargear: { weapons: ["Assault Bolters", "Plasma Exterminators"] } },
-  { id: "reivers", name: "Reiver Squad (5 models)", role: "Infantry", points: 85, squadSizes: [{ models: 5, points: 85 }, { models: 10, points: 165 }], wargear: { weapons: ["Special Issue Bolt Pistol & Combat Knife", "Bolt Carbine"] } },
-  { id: "ster_vet", name: "Sternguard Veteran Squad (5 models)", role: "Infantry", points: 105, squadSizes: [{ models: 5, points: 105 }, { models: 10, points: 210 }], wargear: { special: ["Sternguard Bolt Rifle", "Sternguard Heavy Bolter", "Pyreblaster"] } },
-  { id: "term_sq", name: "Terminator Squad (5 models)", role: "Infantry", points: 190, squadSizes: [{ models: 5, points: 190 }, { models: 10, points: 380 }], wargear: { heavy_weapon: ["Storm Bolter", "Assault Cannon", "Cyclone Missile Launcher", "Heavy Flamer"], melee: ["Power Fist", "Chainfist"] } },
-  { id: "term_assault", name: "Terminator Assault Squad (5 models)", role: "Infantry", points: 170, squadSizes: [{ models: 5, points: 170 }, { models: 10, points: 340 }], wargear: { weapons: ["Thunder Hammer & Storm Shield", "Twin Lightning Claws"] } },
-  { id: "vanguard_jp", name: "Vanguard Veteran Squad with Jump Packs (5 models)", role: "Infantry", points: 110, squadSizes: [{ models: 5, points: 110 }, { models: 10, points: 220 }], wargear: { weapons: ["Heavy Bolt Pistol & Astartes Chainsword", "Storm Shield & Power Weapon", "Relic Blade"] } },
-  { id: "out_riders", name: "Outrider Squad (3 models)", role: "Infantry", points: 80, squadSizes: [{ models: 3, points: 80 }, { models: 6, points: 160 }], wargear: { weapons: ["Twin Bolt Rifles & Astartes Chainswords"] } },
-  { id: "ball_dr", name: "Ballistus Dreadnought", role: "Vehicle", points: 150, wargear: { layout: ["Ballistus Lascannon & Missile Launcher"] } },
-  { id: "red_dr", name: "Redemptor Dreadnought", role: "Vehicle", points: 170, wargear: { arm: ["Macro Plasma Incinerator", "Heavy Onslaught Gatling Cannon"], chest: ["Twin Fragstorm Grenade Launcher", "Twin Storm Bolter"] } },
-  { id: "brutalis", name: "Brutalis Dreadnought", role: "Vehicle", points: 160, wargear: { arms: ["Brutalis Fists", "Brutalis Bolt Rifles"], ranged: ["Brutalis Bolt Rifles", "Brutalis Heavy Bolters"] } },
-  { id: "invictor", name: "Invictor Tactical Warsuit", role: "Vehicle", points: 135, wargear: { weapon: ["Twin Ironhail Autocannon", "Incendium Cannon"] } },
-  { id: "firestrike", name: "Firestrike Servo-turrets", role: "Vehicle", points: 80, squadSizes: [{ models: 1, points: 80 }, { models: 2, points: 160 }], wargear: { weapon: ["Twin Firestrike Autocannon", "Twin Firestrike Lascannon"] } },
-  { id: "glad_lancer", name: "Gladiator Lancer", role: "Vehicle", points: 160, wargear: { turret: ["Lancer Laser Destroyer"], hull: ["Twin Heavy Bolter", "Icarus Rocket Pod"] } },
-  { id: "glad_reaper", name: "Gladiator Reaper", role: "Vehicle", points: 165, wargear: { turret: ["Twin Heavy Onslaught Gatling Cannon"], hull: ["Twin Heavy Bolter", "Icarus Rocket Pod"] } },
-  { id: "glad_valiant", name: "Gladiator Valiant", role: "Vehicle", points: 165, wargear: { turret: ["Twin Las-talon"], hull: ["Twin Heavy Bolter", "Icarus Rocket Pod"] } },
-  { id: "invader_atv", name: "Invader ATV", role: "Vehicle", points: 65, squadSizes: [{ models: 1, points: 65, pointsBySelection: { weapon: { "Multi-melta": 70 } } }, { models: 2, points: 130, pointsBySelection: { weapon: { "Multi-melta": 140 } } }], wargear: { weapon: ["Onslaught Gatling Cannon", "Multi-melta"] } },
-  { id: "repulsor", name: "Repulsor", role: "Vehicle", points: 190, wargear: { main: ["Heavy Onslaught Gatling Cannon", "Las-talon"], option: ["Ironhail Heavy Stubber", "Icarus Rocket Pod"] } },
-  { id: "impulsor", name: "Impulsor", role: "Vehicle", points: 70, wargear: { main: ["Bellicatus Missile Array", "Orbital Comms Array", "Shield Dome", "Ironhail Heavy Stubber"], secondary: ["Storm Bolters", "Fragstorm Grenade Launchers"] } },
-  { id: "rep_ex", name: "Repulsor Executioner", role: "Vehicle", points: 260, wargear: { turret: ["Macro Plasma Incinerator", "Heavy Laser Destroyer"], option: ["Ironhail Heavy Stubber", "Icarus Rocket Pod"] } },
-  { id: "rhino", name: "Rhino", role: "Vehicle", points: 70, wargear: { storm_bolter: ["Storm Bolter", "Combi-weapon"] } },
-  { id: "land_raider", name: "Land Raider", role: "Vehicle", points: 245, wargear: { sponsons: ["Godhammer Lascannons"], hull: ["Twin Heavy Bolter", "Multi-melta"] } },
-  { id: "land_raider_crusader", name: "Land Raider Crusader", role: "Vehicle", points: 230, wargear: { hull: ["Twin Assault Cannon"], sponsons: ["Hurricane Bolters"] } },
-  { id: "land_raider_redeemer", name: "Land Raider Redeemer", role: "Vehicle", points: 245, wargear: { hull: ["Twin Assault Cannon"], sponsons: ["Flamestorm Cannons"] } },
-  { id: "land_speeder", name: "Land Speeder", role: "Vehicle", points: 105, wargear: { weapons: ["Heavy Bolter", "Multi-melta"] } },
-  { id: "storm_hail", name: "Storm Speeder Hailstrike", role: "Vehicle", points: 110, wargear: { weapons: ["Hailstrike weapons"] } },
-  { id: "storm_hammer", name: "Storm Speeder Hammerstrike", role: "Vehicle", points: 140, wargear: { weapons: ["Hammerstrike weapons"] } },
-  { id: "storm_thunder", name: "Storm Speeder Thunderstrike", role: "Vehicle", points: 140, wargear: { weapons: ["Thunderstrike weapons"] } },
-  { id: "astraeus", name: "Astraeus", role: "Vehicle", points: 550, wargear: { main: ["Twin macro-accelerator cannon", "Twin lascannon array"] } },
-  { id: "thunderhawk", name: "Thunderhawk Gunship", role: "Vehicle", points: 850, wargear: { weapons: ["Thunderhawk heavy cannon & turbo-laser destructor"] } },
-  { id: "drop_pod", name: "Drop Pod", role: "Vehicle", points: 60, wargear: { launcher: ["Deathwind Launcher", "Storm Bolter"] } },
-  { id: "watch_master", name: "Watch Master", role: "HQ", points: 105, isEpicHero: false, wargear: { weapons: ["Guardian Spear"] }, chapter: "deathwatch" },
-  { id: "watch_captain_artemis", name: "Watch Captain Artemis", role: "HQ", points: 75, isEpicHero: true, wargear: { weapons: ["Hellfire Extremis & master-crafted power weapon"] }, chapter: "deathwatch" },
-  { id: "deathwatch_terminators", name: "Deathwatch Terminator Squad (5 models)", role: "Infantry", points: 190, wargear: { ranged: ["Storm Bolter", "Cyclone Missile Launcher"], melee: ["Power Fist", "Chainfist"] }, chapter: "deathwatch" },
-  { id: "deathwatch_veterans", name: "Deathwatch Veterans (5 models)", role: "Infantry", points: 115, wargear: { weapons: ["Deathwatch boltgun", "Frag cannon", "Infernus heavy bolter", "Xenophase blade"] }, chapter: "deathwatch" },
-  { id: "decimus_kill_team", name: "Decimus Kill Team (5 models)", role: "Infantry", points: 110, wargear: { weapons: ["Mixed Deathwatch Kill Team loadout"] }, chapter: "deathwatch" },
-  { id: "fortis_kill_team", name: "Fortis Kill Team (10 models)", role: "Infantry", points: 210, wargear: { weapons: ["Mixed Tacticus Kill Team loadout"] }, chapter: "deathwatch" },
-  { id: "indomitor_kill_team", name: "Indomitor Kill Team (10 models)", role: "Infantry", points: 280, wargear: { weapons: ["Mixed Gravis Kill Team loadout"] }, chapter: "deathwatch" },
-  { id: "spectrus_kill_team", name: "Spectrus Kill Team (10 models)", role: "Infantry", points: 185, wargear: { weapons: ["Mixed Phobos Kill Team loadout"] }, chapter: "deathwatch" },
-  { id: "talonstrike_kill_team", name: "Talonstrike Kill Team (10 models)", role: "Infantry", points: 280, wargear: { weapons: ["Mixed Jump Pack Kill Team loadout"] }, chapter: "deathwatch" },
-  { id: "astorath", name: "Astorath", role: "HQ", points: 90, isEpicHero: true, wargear: { weapons: ["Executioner's Axe & absolvor bolt pistol"] }, chapter: "blood_angels" },
-  { id: "baal_predator", name: "Baal Predator", role: "Vehicle", points: 135, wargear: { turret: ["Twin assault cannon", "Flamestorm cannon"], sponsons: ["Heavy bolters", "Heavy flamers"] }, chapter: "blood_angels" },
-  { id: "mephiston", name: "Chief Librarian Mephiston", role: "HQ", points: 175, isEpicHero: true, wargear: { weapons: ["Vitarus & plasma pistol"] }, chapter: "blood_angels" },
-  { id: "commander_dante", name: "Commander Dante", role: "HQ", points: 140, isEpicHero: true, wargear: { weapons: ["The Axe Mortalis & Perdition Pistol"] }, chapter: "blood_angels" },
-  { id: "death_company_captain", name: "Death Company Captain", role: "HQ", points: 80, wargear: { weapons: ["Heavy bolt pistol & Astartes chainsword"] }, chapter: "blood_angels" },
-  { id: "death_company_captain_jp", name: "Death Company Captain with Jump Pack", role: "HQ", points: 85, wargear: { weapons: ["Heavy bolt pistol & Astartes chainsword"] }, chapter: "blood_angels" },
-  { id: "death_company_dreadnought", name: "Death Company Dreadnought", role: "Vehicle", points: 165, wargear: { melee: ["Blood talons", "Furioso fists"], ranged: ["Heavy flamer", "Meltagun"] }, chapter: "blood_angels" },
-  { id: "death_company_marines", name: "Death Company Marines (5 models)", role: "Infantry", points: 90, wargear: { weapons: ["Bolt rifles", "Heavy bolt pistols & chainswords"] }, chapter: "blood_angels" },
-  { id: "death_company_jump", name: "Death Company Marines with Jump Packs (5 models)", role: "Infantry", points: 130, wargear: { weapons: ["Heavy bolt pistols & chainswords"] }, chapter: "blood_angels" },
-  { id: "lemartes", name: "Lemartes", role: "HQ", points: 110, isEpicHero: true, wargear: { weapons: ["Blood Crozius & bolt pistol"] }, chapter: "blood_angels" },
-  { id: "sanguinary_guard", name: "Sanguinary Guard (3 models)", role: "Infantry", points: 135, wargear: { weapons: ["Encarmine blades", "Encarmine spears"] }, chapter: "blood_angels" },
-  { id: "sanguinary_priest", name: "Sanguinary Priest", role: "HQ", points: 60, wargear: { weapons: ["Absolvor bolt pistol & chainsword"] }, chapter: "blood_angels" },
-  { id: "sanguinor", name: "The Sanguinor", role: "HQ", points: 120, isEpicHero: true, wargear: { weapons: ["Encarmine broadsword"] }, chapter: "blood_angels" },
-  { id: "asmodai", name: "Asmodai", role: "HQ", points: 80, isEpicHero: true, wargear: { weapons: ["Blades of Reason & crozius arcanum"] }, chapter: "dark_angels" },
-  { id: "azrael", name: "Azrael", role: "HQ", points: 150, isEpicHero: true, wargear: { weapons: ["The Lion's Wrath & Sword of Secrets"] }, chapter: "dark_angels" },
-  { id: "belial", name: "Belial", role: "HQ", points: 100, isEpicHero: true, wargear: { weapons: ["Sword of Silence"] }, chapter: "dark_angels" },
-  { id: "deathwing_knights", name: "Deathwing Knights (5 models)", role: "Infantry", points: 255, wargear: { weapons: ["Mace of absolution", "Power weapon"] }, chapter: "dark_angels" },
-  { id: "deathwing_terminators", name: "Deathwing Terminator Squad (5 models)", role: "Infantry", points: 190, wargear: { ranged: ["Storm Bolter", "Cyclone Missile Launcher"], melee: ["Power Fist", "Chainfist"] }, chapter: "dark_angels" },
-  { id: "inner_circle_companions", name: "Inner Circle Companions (3 models)", role: "Infantry", points: 90, wargear: { weapons: ["Calibanite greatswords"] }, chapter: "dark_angels" },
-  { id: "land_speeder_vengeance", name: "Land Speeder Vengeance", role: "Vehicle", points: 150, wargear: { weapons: ["Plasma storm battery", "Heavy bolter"] }, chapter: "dark_angels" },
-  { id: "lazarus", name: "Lazarus", role: "HQ", points: 80, isEpicHero: true, wargear: { weapons: ["Enmity's Edge & bolt pistol"] }, chapter: "dark_angels" },
-  { id: "lion_eljonson", name: "Lion El'Jonson", role: "HQ", points: 415, isEpicHero: true, wargear: { weapons: ["Fealty"] }, chapter: "dark_angels" },
-  { id: "nephilim_jetfighter", name: "Nephilim Jetfighter", role: "Vehicle", points: 200, wargear: { weapons: ["Nephilim lascannons & Blacksword missiles"] }, chapter: "dark_angels" },
-  { id: "ravenwing_black_knights", name: "Ravenwing Black Knights (3 models)", role: "Infantry", points: 85, wargear: { weapons: ["Corvus hammers & plasma talons"] }, chapter: "dark_angels" },
-  { id: "ravenwing_command", name: "Ravenwing Command Squad (3 models)", role: "Infantry", points: 115, wargear: { weapons: ["Corvus hammers & plasma talons"] }, chapter: "dark_angels" },
-  { id: "ravenwing_darkshroud", name: "Ravenwing Darkshroud", role: "Vehicle", points: 80, wargear: { weapons: ["Heavy bolter"] }, chapter: "dark_angels" },
-  { id: "ravenwing_dark_talon", name: "Ravenwing Dark Talon", role: "Vehicle", points: 190, wargear: { weapons: ["Rift cannon & hurricane bolters"] }, chapter: "dark_angels" },
-  { id: "sammael", name: "Sammael", role: "HQ", points: 120, isEpicHero: true, wargear: { weapons: ["The Raven Sword & plasma cannon"] }, chapter: "dark_angels" },
-  { id: "crusade_ancient", name: "Crusade Ancient", role: "HQ", points: 45, wargear: { weapons: ["Bolt rifle & close combat weapon"] }, chapter: "black_templars" },
-  { id: "chaplain_grimaldus", name: "Chaplain Grimaldus", role: "HQ", points: 120, isEpicHero: true, wargear: { weapons: ["Artificer crozius & plasma pistol"] }, chapter: "black_templars" },
-  { id: "crusader_squad", name: "Crusader Squad (10 models)", role: "Battleline", points: 160, wargear: { weapons: ["Sword Brother and Initiate/Neophyte squad loadout"] }, chapter: "black_templars" },
-  { id: "emperors_champion", name: "Emperor's Champion", role: "HQ", points: 100, isEpicHero: true, wargear: { weapons: ["Black Sword & bolt pistol"] }, chapter: "black_templars" },
-  { id: "execrator", name: "Execrator", role: "HQ", points: 65, wargear: { weapons: ["Crozius arcanum & bolt pistol"] }, chapter: "black_templars" },
-  { id: "helbrecht", name: "High Marshal Helbrecht", role: "HQ", points: 125, isEpicHero: true, wargear: { weapons: ["Sword of the High Marshals & combi-melta"] }, chapter: "black_templars" },
-  { id: "marshal", name: "Marshal", role: "HQ", points: 80, wargear: { weapons: ["Master-crafted power weapon & bolt pistol"] }, chapter: "black_templars" },
-  { id: "sword_brethren", name: "Sword Brethren Squad (4 models)", role: "Infantry", points: 115, wargear: { weapons: ["Power weapons, lightning claws, thunder hammer"] }, chapter: "black_templars" },
-  { id: "arjac_rockfist", name: "Arjac Rockfist", role: "HQ", points: 105, isEpicHero: true, wargear: { weapons: ["Foehammer"] }, chapter: "space_wolves" },
-  { id: "bjorn_fellhanded", name: "Bjorn the Fell-Handed", role: "Vehicle", points: 160, isEpicHero: true, canBeWarlord: true, wargear: { weapons: ["Heavy flamer", "Fenrisian great axe"] }, chapter: "space_wolves" },
-  { id: "blood_claws", name: "Blood Claws (10 models)", role: "Battleline", points: 150, wargear: { weapons: ["Bolt pistols & close combat weapons"] }, chapter: "space_wolves" },
-  { id: "fenrisian_wolves", name: "Fenrisian Wolves (5 models)", role: "Infantry", points: 45, wargear: { weapons: ["Teeth and claws"] }, chapter: "space_wolves" },
-  { id: "grey_hunters", name: "Grey Hunters (10 models)", role: "Battleline", points: 180, wargear: { weapons: ["Boltguns & close combat weapons"] }, chapter: "space_wolves" },
-  { id: "iron_priest", name: "Iron Priest", role: "HQ", points: 60, wargear: { weapons: ["Forge weapons"] }, chapter: "space_wolves" },
-  { id: "logan_grimnar", name: "Logan Grimnar", role: "HQ", points: 150, isEpicHero: true, wargear: { weapons: ["The Axe Morkai"] }, chapter: "space_wolves" },
-  { id: "murderfang", name: "Murderfang", role: "Vehicle", points: 150, isEpicHero: true, wargear: { weapons: ["Heavy flamer & Murderfang's claws"] }, chapter: "space_wolves" },
-  { id: "njal_stormcaller", name: "Njal Stormcaller", role: "HQ", points: 100, isEpicHero: true, wargear: { weapons: ["Staff of the Stormcaller"] }, chapter: "space_wolves" },
-  { id: "ragnar_blackmane", name: "Ragnar Blackmane", role: "HQ", points: 100, isEpicHero: true, wargear: { weapons: ["Frostfang & bolt pistol"] }, chapter: "space_wolves" },
-  { id: "thunderwolf_cavalry", name: "Thunderwolf Cavalry (3 models)", role: "Cavalry", points: 115, wargear: { weapons: ["Bolt pistol", "Storm Shield", "Close combat weapon"] }, chapter: "space_wolves" },
-  { id: "ulrik_slayer", name: "Ulrik the Slayer", role: "HQ", points: 90, isEpicHero: true, wargear: { weapons: ["Crozius arcanum & plasma pistol"] }, chapter: "space_wolves" },
-  { id: "venerable_dreadnought_sw", name: "Venerable Dreadnought", role: "Vehicle", points: 130, wargear: { weapons: ["Assault cannon", "Fenrisian great axe"] }, chapter: "space_wolves" },
-  { id: "wolf_guard_battle_leader", name: "Wolf Guard Battle Leader", role: "HQ", points: 80, wargear: { weapons: ["Master-crafted boltgun & power weapon"] }, chapter: "space_wolves" },
-  { id: "wolf_guard_headtakers", name: "Wolf Guard Headtakers (3 models)", role: "Infantry", points: 85, wargear: { weapons: ["Headtaker weapons"] }, chapter: "space_wolves" },
-  { id: "wolf_guard_terminators", name: "Wolf Guard Terminators with Storm Shields (5 models)", role: "Infantry", points: 180, wargear: { weapons: ["Storm bolters & power fists"] }, chapter: "space_wolves" },
-  { id: "wolf_priest", name: "Wolf Priest", role: "HQ", points: 75, wargear: { weapons: ["Crozius arcanum & bolt pistol"] }, chapter: "space_wolves" },
-  { id: "wolf_scouts", name: "Wolf Scouts (6 models)", role: "Infantry", points: 95, wargear: { weapons: ["Scout squad weapons"] }, chapter: "space_wolves" },
-  { id: "wulfen", name: "Wulfen (5 models)", role: "Infantry", points: 90, wargear: { weapons: ["Wulfen weapons"] }, chapter: "space_wolves" },
-  { id: "wulfen_dreadnought", name: "Wulfen Dreadnought", role: "Vehicle", points: 140, wargear: { weapons: ["Fenrisian great axe", "Great wolf claw"] }, chapter: "space_wolves" },
-  { id: "wulfen_storm_shields", name: "Wulfen with Storm Shields (5 models)", role: "Infantry", points: 125, wargear: { weapons: ["Storm shields & close combat weapons"] }, chapter: "space_wolves" },
-  { id: "Ventris", name: "Uriel Ventris", role: "HQ", points: 95, isEpicHero: true, wargear: { weapons: ["Bolt pistol, Invictus (bolter), and the Sword of Idaeus."] } },
-];
-
 const chapters = {
   codex: "Codex: Space Marines",
   ultramarines: "Ultramarines",
@@ -216,22 +62,22 @@ const chapterExclusiveUnits = {
 const unitInfo = {
   guilliman: "A named Ultramarines commander. His datasheet represents a powerful close-range combatant and army-support leader.",
   calgar: "An Ultramarines Chapter Master accompanied by Victrix Honour Guard; his roster entry includes his bodyguard models.",
-  int_sq: "Battleline infantry suited to holding objectives and supporting the wider force.",
-  ass_int: "Close-combat Battleline infantry suited to taking and holding objectives.",
-  hv_int: "Durable Gravis Battleline infantry suited to holding ground under fire.",
-  aggressors: "Gravis assault infantry suited to advancing into close-range engagements.",
-  eliminators: "Phobos marksmen suited to reconnaissance and precision fire support.",
-  eradicators: "Gravis anti-armour infantry suited to engaging heavily armoured targets.",
-  hellblasters: "Plasma-armed infantry suited to high-intensity ranged support.",
+  int_sq: "Battleline infantry for holding objectives.",
+  ass_int: "Close-combat Battleline infantry suited to taking objectives.",
+  hv_int: "Durable Gravis Battleline infantry.",
+  aggressors: "Gravis assault infantry suited to close-range engagements.",
+  eliminators: "Phobos marksmen suited to precision fire support.",
+  eradicators: "Gravis infantry suited to engaging heavily armoured targets.",
+  hellblasters: "Elite infantry that provides specialised fire support.",
   infiltrators: "Phobos screening infantry suited to forward deployment and denying enemy reinforcements near their position.",
   infil_sq: "Phobos screening infantry suited to forward deployment and denying enemy reinforcements near their position.",
-  incursors: "Phobos reconnaissance infantry equipped for close-range fighting and target marking.",
-  scout_sq: "Light infantry suited to scouting, screening, and holding forward positions.",
-  incept_sq: "Jump-pack infantry suited to rapid deployment and mobile fire support.",
-  term_sq: "Heavily armoured infantry suited to holding critical positions.",
-  ball_dr: "Long-range fire-support Dreadnought equipped with lascannons and missile weaponry.",
-  red_dr: "A versatile Dreadnought. The arm weapon choice favours plasma or high-volume fire.",
-  land_raider: "A heavy transport suited to carrying elite infantry and supporting the advance."
+  incursors: "Phobos reconnaissance infantry suited to forward operations and target marking.",
+  scout_sq: "Light infantry that can screen, scout, and hold forward positions.",
+  incept_sq: "Mobile jump-pack infantry suited to rapid deployment.",
+  term_sq: "Heavily armoured infantry suited to holding key positions.",
+  ball_dr: "Long-range fire-support Dreadnought.",
+  red_dr: "A versatile Dreadnought that can support a range of battlefield roles.",
+  land_raider: "A heavily armoured transport."
 };
 
 const detachments = {
@@ -523,7 +369,16 @@ const detachmentDescriptions = {
 };
 
 let currentRoster = [];
+let currentRosterNotes = "";
 let selectedInstanceId = null;
+let draftRestoreFailed = false;
+let undoHistory = [];
+let redoHistory = [];
+let pendingTextEdit = null;
+let savedRosters = [];
+let appDialogOnConfirm = null;
+let appDialogOnCancel = null;
+let appDialogReturnFocus = null;
 let activeRoleFilter = "all";
 let currentDetachment = "gladius_task_force";
 let currentChapter = "codex";
@@ -546,8 +401,32 @@ const customLimitControlsEl = document.getElementById("customLimitControls");
 const pointsLimitEl = document.getElementById("ptsLimit");
 const relativeInfoContentEl = document.getElementById("relativeInfoContent");
 const rosterRequirementsEl = document.getElementById("rosterRequirements");
+const currentArmySummaryEl = document.getElementById("currentArmySummary");
+const catalogSortEl = document.getElementById("catalogSort");
+const hideAddedUnitsEl = document.getElementById("hideAddedUnits");
+const rosterNotesEl = document.getElementById("rosterNotes");
+const printRosterNotesEl = document.getElementById("printRosterNotes");
+const draftStatusEl = document.getElementById("draftStatus");
+const printRosterMetaEl = document.getElementById("printRosterMeta");
+const savedRosterSelectEl = document.getElementById("savedRosterSelect");
+const undoButtonEl = document.getElementById("btnUndo");
+const redoButtonEl = document.getElementById("btnRedo");
+const appDialogEl = document.getElementById("appDialog");
+const appDialogMessageEl = document.getElementById("appDialogMessage");
+const appDialogInputLabelEl = document.getElementById("appDialogInputLabel");
+const appDialogInputLabelTextEl = document.getElementById("appDialogInputLabelText");
+const appDialogInputEl = document.getElementById("appDialogInput");
+const appDialogErrorEl = document.getElementById("appDialogError");
+const appDialogConfirmButtonEl = document.getElementById("appDialogConfirm");
+const appDialogCancelButtonEl = document.getElementById("appDialogCancel");
+
+const DRAFT_STORAGE_KEY = "whDataArmyBuilderDraft";
+const ROSTER_LIBRARY_KEY = "whDataSavedRosters";
+const HISTORY_LIMIT = 50;
 
 function init() {
+  loadDraft();
+  loadRosterLibrary();
   applyChapterTheme(currentChapter);
   Object.entries(chapters).forEach(([id, name]) => {
     const option = document.createElement("option");
@@ -558,16 +437,49 @@ function init() {
   chapterSelectEl.value = currentChapter;
 
   populateDetachmentOptions();
-  renderCatalog(getAvailableUnits());
+  syncGameModeControls();
+  pointsLimitEl.textContent = currentPointsLimit;
+  updateDetachmentInfo();
   renderRoster();
-  updatePointsDisplay();
+  renderConfigurator();
   
   // Event Listeners
   searchBarEl.addEventListener("input", filterUnits);
+  catalogSortEl.addEventListener("change", filterUnits);
+  hideAddedUnitsEl.addEventListener("change", filterUnits);
+  rosterNotesEl.value = currentRosterNotes;
+  rosterNotesEl.addEventListener("focus", beginTextEdit);
+  rosterNotesEl.addEventListener("blur", finishTextEdit);
+  rosterNotesEl.addEventListener("keydown", event => {
+    if (event.key === "Escape") rosterNotesEl.blur();
+  });
+  rosterNotesEl.addEventListener("input", () => {
+    currentRosterNotes = rosterNotesEl.value;
+    saveDraft();
+  });
+  document.getElementById("btnSaveRoster").addEventListener("click", saveCurrentToLibrary);
+  document.getElementById("btnLoadRoster").addEventListener("click", loadSelectedRoster);
+  document.getElementById("btnDuplicateRoster").addEventListener("click", duplicateSelectedRoster);
+  document.getElementById("btnDeleteRoster").addEventListener("click", deleteSelectedRoster);
+  savedRosterSelectEl.addEventListener("change", updateRosterLibraryButtons);
+  appDialogConfirmButtonEl.addEventListener("click", confirmAppDialog);
+  appDialogCancelButtonEl.addEventListener("click", cancelAppDialog);
+  appDialogEl.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      cancelAppDialog();
+    } else if (event.key === "Enter" && event.target === appDialogInputEl) {
+      event.preventDefault();
+      confirmAppDialog();
+    }
+  });
+  undoButtonEl.addEventListener("click", undoRosterChange);
+  redoButtonEl.addEventListener("click", redoRosterChange);
   document.getElementById("btnExportJson").addEventListener("click", () => exportData('json'));
   document.getElementById("btnExportText").addEventListener("click", () => exportData('text'));
   document.getElementById("btnImportJson").addEventListener("click", () => importFileEl.click());
-  document.getElementById("btnClearRoster").addEventListener("click", clearRoster);
+  document.getElementById("btnClearRoster").addEventListener("click", startNewRoster);
+  document.getElementById("btnPrintRoster").addEventListener("click", () => window.print());
   importFileEl.addEventListener("change", importData);
   detachmentSelectEl.addEventListener("change", changeDetachment);
   chapterSelectEl.addEventListener("change", changeChapter);
@@ -586,11 +498,497 @@ function init() {
       filterUnits();
     });
   });
+
+  document.querySelectorAll(".mobile-nav-btn").forEach(button => {
+    button.addEventListener("click", () => activateMobilePanel(button.dataset.panel));
+  });
+  activateMobilePanel("panel-roster");
+}
+
+function captureBuilderState() {
+  return {
+    chapter: currentChapter,
+    detachment: currentDetachment,
+    pointsLimit: currentPointsLimit,
+    rosterNotes: currentRosterNotes,
+    selectedInstanceId,
+    units: currentRoster.map(item => ({
+      ...item,
+      enhancement: item.enhancement ? { ...item.enhancement } : null
+    }))
+  };
+}
+
+function getLeaderKeywordTypes(unitId) {
+  return Object.entries(leaderKeywordTypes)
+    .filter(([, unitIds]) => unitIds.includes(unitId))
+    .map(([type]) => type);
+}
+
+function canJoinAnotherLeader(firstUnitId, secondUnitId) {
+  const firstRules = leaderEligibility[firstUnitId];
+  const secondRules = leaderEligibility[secondUnitId];
+  const firstTypes = getLeaderKeywordTypes(firstUnitId);
+  const secondTypes = getLeaderKeywordTypes(secondUnitId);
+  const firstAllowsPairing = firstRules && firstRules.canJoinWith &&
+    firstRules.canJoinWith.some(type => secondTypes.includes(type));
+  const secondAllowsPairing = secondRules && secondRules.canJoinWith &&
+    secondRules.canJoinWith.some(type => firstTypes.includes(type));
+  return Boolean(firstAllowsPairing || secondAllowsPairing);
+}
+
+function canAttachLeaderToBodyguard(leader, bodyguard, alreadyAttachedLeaders = []) {
+  const rules = leaderEligibility[leader.unitId];
+  if (!rules || !rules.bodyguardUnitIds.includes(bodyguard.unitId) || leader === bodyguard) {
+    return false;
+  }
+  if (alreadyAttachedLeaders.length === 0) return true;
+  return alreadyAttachedLeaders.length === 1 &&
+    canJoinAnotherLeader(leader.unitId, alreadyAttachedLeaders[0].unitId);
+}
+
+function sanitizeLeaderAttachments(roster) {
+  const acceptedLeaders = new Map();
+  roster.forEach(leader => {
+    if (!leader.attachedToInstanceId) return;
+    const bodyguard = roster.find(item => item.instanceId === leader.attachedToInstanceId);
+    const alreadyAttached = bodyguard
+      ? acceptedLeaders.get(bodyguard.instanceId) || []
+      : [];
+    if (!bodyguard || !canAttachLeaderToBodyguard(leader, bodyguard, alreadyAttached)) {
+      leader.attachedToInstanceId = null;
+      return;
+    }
+    alreadyAttached.push(leader);
+    acceptedLeaders.set(bodyguard.instanceId, alreadyAttached);
+  });
+}
+
+function updateHistoryButtons() {
+  undoButtonEl.disabled = undoHistory.length === 0;
+  redoButtonEl.disabled = redoHistory.length === 0;
+  undoButtonEl.title = undoButtonEl.disabled ? "Make a roster change to enable Undo." : "Undo the last roster change.";
+  redoButtonEl.title = redoButtonEl.disabled ? "Undo a change to enable Redo." : "Redo the undone roster change.";
+}
+
+function openAppDialog(message, options) {
+  const settings = options || {};
+  appDialogReturnFocus = document.activeElement;
+  appDialogMessageEl.textContent = message;
+  appDialogInputLabelEl.hidden = !settings.inputLabel;
+  appDialogInputLabelTextEl.textContent = settings.inputLabel || "";
+  appDialogInputEl.value = settings.initialValue || "";
+  appDialogErrorEl.textContent = "";
+  appDialogErrorEl.hidden = true;
+  appDialogConfirmButtonEl.textContent = settings.confirmLabel || "Continue";
+  appDialogCancelButtonEl.hidden = settings.showCancel === false;
+  appDialogOnConfirm = settings.onConfirm;
+  appDialogOnCancel = settings.onCancel || null;
+  appDialogEl.hidden = false;
+  if (settings.inputLabel) {
+    appDialogInputEl.focus();
+    appDialogInputEl.select();
+  } else {
+    appDialogConfirmButtonEl.focus();
+  }
+}
+
+function closeAppDialog() {
+  appDialogEl.hidden = true;
+  appDialogOnConfirm = null;
+  appDialogOnCancel = null;
+  if (appDialogReturnFocus && appDialogReturnFocus.isConnected) {
+    appDialogReturnFocus.focus();
+  }
+}
+
+function confirmAppDialog() {
+  const value = appDialogInputLabelEl.hidden ? null : appDialogInputEl.value.trim();
+  if (appDialogInputLabelEl.hidden === false && !value) {
+    appDialogErrorEl.textContent = "Enter a name to continue.";
+    appDialogErrorEl.hidden = false;
+    appDialogInputEl.focus();
+    return;
+  }
+  const onConfirm = appDialogOnConfirm;
+  closeAppDialog();
+  if (onConfirm) onConfirm(value);
+}
+
+function cancelAppDialog() {
+  const onCancel = appDialogOnCancel;
+  closeAppDialog();
+  if (onCancel) onCancel();
+}
+
+function requestAppConfirmation(message, confirmLabel, onConfirm, onCancel) {
+  openAppDialog(message, { confirmLabel, onConfirm, onCancel });
+}
+
+function showAppMessage(message) {
+  openAppDialog(message, { confirmLabel: "OK", showCancel: false });
+}
+
+function pushUndoSnapshot(snapshot = captureBuilderState()) {
+  undoHistory.push(snapshot);
+  if (undoHistory.length > HISTORY_LIMIT) undoHistory.shift();
+  redoHistory = [];
+  updateHistoryButtons();
+}
+
+function beginTextEdit() {
+  pendingTextEdit = captureBuilderState();
+}
+
+function finishTextEdit() {
+  if (!pendingTextEdit) return;
+  const previous = pendingTextEdit;
+  pendingTextEdit = null;
+  if (JSON.stringify(previous) !== JSON.stringify(captureBuilderState())) {
+    pushUndoSnapshot(previous);
+  }
+}
+
+function restoreBuilderState(state) {
+  currentChapter = state.chapter;
+  currentDetachment = state.detachment;
+  currentPointsLimit = state.pointsLimit;
+  currentRosterNotes = state.rosterNotes;
+  currentRoster = state.units.map(item => ({
+    ...item,
+    enhancement: item.enhancement ? { ...item.enhancement } : null
+  }));
+  sanitizeLeaderAttachments(currentRoster);
+  selectedInstanceId = currentRoster.some(item => item.instanceId === state.selectedInstanceId)
+    ? state.selectedInstanceId
+    : currentRoster.length ? currentRoster[0].instanceId : null;
+  chapterSelectEl.value = currentChapter;
+  applyChapterTheme(currentChapter);
+  populateDetachmentOptions();
+  detachmentSelectEl.value = currentDetachment;
+  customPointsLimitEl.value = String(currentPointsLimit);
+  syncGameModeControls();
+  pointsLimitEl.textContent = currentPointsLimit;
+  rosterNotesEl.value = currentRosterNotes;
+  updateDetachmentInfo();
+  renderRoster();
+  renderConfigurator();
+}
+
+function undoRosterChange() {
+  if (undoHistory.length === 0) return;
+  redoHistory.push(captureBuilderState());
+  restoreBuilderState(undoHistory.pop());
+  updateHistoryButtons();
+}
+
+function redoRosterChange() {
+  if (redoHistory.length === 0) return;
+  undoHistory.push(captureBuilderState());
+  restoreBuilderState(redoHistory.pop());
+  updateHistoryButtons();
+}
+
+function activateMobilePanel(panelId) {
+  document.querySelectorAll(".mobile-nav-btn").forEach(button => {
+    const active = button.dataset.panel === panelId;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  document.querySelectorAll(".main-layout > .panel").forEach(panel => {
+    panel.classList.toggle("mobile-panel-active", panel.id === panelId);
+  });
+}
+
+function getRosterLibraryState() {
+  return captureBuilderState();
+}
+
+function saveRosterLibrary() {
+  try {
+    localStorage.setItem(ROSTER_LIBRARY_KEY, JSON.stringify(savedRosters));
+    showDraftStatus("Saved roster library updated.");
+    return true;
+  } catch (error) {
+    showDraftStatus("Could not save roster library: " + error.message, true);
+    return false;
+  }
+}
+
+function loadRosterLibrary() {
+  try {
+    const stored = localStorage.getItem(ROSTER_LIBRARY_KEY);
+    if (!stored) {
+      renderRosterLibraryOptions();
+      return;
+    }
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) throw new Error("The saved roster library is malformed.");
+    savedRosters = parsed.filter(item =>
+      item && typeof item.id === "string" && typeof item.name === "string" &&
+      item.state && Array.isArray(item.state.units)
+    );
+    renderRosterLibraryOptions();
+  } catch (error) {
+    showDraftStatus("Could not load saved rosters: " + error.message, true);
+    renderRosterLibraryOptions();
+  }
+}
+
+function renderRosterLibraryOptions(selectedId = savedRosterSelectEl.value) {
+  savedRosterSelectEl.innerHTML = "";
+  if (savedRosters.length === 0) {
+    savedRosterSelectEl.add(new Option("No saved rosters", ""));
+    savedRosterSelectEl.disabled = true;
+  } else {
+    savedRosterSelectEl.disabled = false;
+    savedRosters.forEach(roster => {
+      savedRosterSelectEl.add(new Option(roster.name, roster.id));
+    });
+    if (savedRosters.some(roster => roster.id === selectedId)) {
+      savedRosterSelectEl.value = selectedId;
+    }
+  }
+  updateRosterLibraryButtons();
+}
+
+function updateRosterLibraryButtons() {
+  const hasSavedRoster = savedRosters.some(roster => roster.id === savedRosterSelectEl.value);
+  ["btnLoadRoster", "btnDuplicateRoster", "btnDeleteRoster"].forEach(id => {
+    const button = document.getElementById(id);
+    button.disabled = !hasSavedRoster;
+    button.title = hasSavedRoster ? "" : "Save a roster first.";
+  });
+  document.getElementById("rosterLibraryHint").textContent = hasSavedRoster
+    ? "Save Current stores a named copy. Loading replaces the active draft; use Undo to restore it."
+    : "Save Current asks for a roster name. Save a roster to enable Load, Duplicate, and Delete.";
+}
+
+function saveCurrentToLibrary() {
+  const suggestedName = savedRosterSelectEl.selectedOptions[0] &&
+    savedRosterSelectEl.selectedOptions[0].value
+    ? savedRosterSelectEl.selectedOptions[0].textContent + " copy"
+    : "My Space Marine Roster";
+  openAppDialog("Name this saved roster:", {
+    inputLabel: "Roster name",
+    initialValue: suggestedName,
+    confirmLabel: "Save roster",
+    onConfirm: name => addRosterToLibrary(name)
+  });
+}
+
+function addRosterToLibrary(name) {
+  const id = "roster_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+  savedRosters.push({ id, name, state: getRosterLibraryState() });
+  if (saveRosterLibrary()) renderRosterLibraryOptions(id);
+  else savedRosters.pop();
+}
+
+function loadSelectedRoster() {
+  const saved = savedRosters.find(roster => roster.id === savedRosterSelectEl.value);
+  if (!saved) {
+    showDraftStatus("Select a saved roster to load.", true);
+    return;
+  }
+  requestAppConfirmation(
+    "Load \"" + saved.name + "\"? This replaces the active draft. You can use Undo to restore it.",
+    "Load roster",
+    () => {
+      pushUndoSnapshot();
+      draftRestoreFailed = false;
+      restoreBuilderState(saved.state);
+      showDraftStatus("Loaded saved roster: " + saved.name + ".");
+    }
+  );
+}
+
+function duplicateSelectedRoster() {
+  const saved = savedRosters.find(roster => roster.id === savedRosterSelectEl.value);
+  if (!saved) {
+    showDraftStatus("Select a saved roster to duplicate.", true);
+    return;
+  }
+  openAppDialog("Name the duplicate roster:", {
+    inputLabel: "Roster name",
+    initialValue: saved.name + " copy",
+    confirmLabel: "Create duplicate",
+    onConfirm: name => addRosterDuplicate(saved, name)
+  });
+}
+
+function addRosterDuplicate(saved, name) {
+  const id = "roster_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+  const instanceIds = new Map(saved.state.units.map((item, index) => [
+    item.instanceId,
+    id + "_unit_" + index
+  ]));
+  const state = {
+    ...saved.state,
+    units: saved.state.units.map(item => ({
+      ...item,
+      instanceId: instanceIds.get(item.instanceId),
+      attachedToInstanceId: instanceIds.get(item.attachedToInstanceId) || null
+    }))
+  };
+  savedRosters.push({ id, name, state });
+  if (saveRosterLibrary()) renderRosterLibraryOptions(id);
+  else savedRosters.pop();
+}
+
+function deleteSelectedRoster() {
+  const saved = savedRosters.find(roster => roster.id === savedRosterSelectEl.value);
+  if (!saved) {
+    showDraftStatus("Select a saved roster to delete.", true);
+    return;
+  }
+  requestAppConfirmation(
+    "Delete the saved roster \"" + saved.name + "\"? This cannot be undone.",
+    "Delete roster",
+    () => {
+      const index = savedRosters.findIndex(roster => roster.id === saved.id);
+      if (index < 0) return;
+      const [removed] = savedRosters.splice(index, 1);
+      if (saveRosterLibrary()) {
+        renderRosterLibraryOptions();
+      } else {
+        savedRosters.splice(index, 0, removed);
+        renderRosterLibraryOptions(removed.id);
+      }
+    }
+  );
+}
+
+function showDraftStatus(message, isError = false) {
+  draftStatusEl.textContent = message;
+  draftStatusEl.classList.toggle("has-error", isError);
+}
+
+function loadDraft() {
+  try {
+    const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
+    if (!savedDraft) return;
+
+    const draft = JSON.parse(savedDraft);
+    if (draft.version !== 1 || !Array.isArray(draft.units)) {
+      throw new Error("The saved draft has an unsupported format.");
+    }
+
+    currentChapter = Object.prototype.hasOwnProperty.call(chapters, draft.chapter)
+      ? draft.chapter
+      : "codex";
+    currentDetachment = Object.prototype.hasOwnProperty.call(detachments, draft.detachment) &&
+      isDetachmentAvailableForChapter(draft.detachment, currentChapter)
+      ? draft.detachment
+      : getDefaultDetachmentForChapter(currentChapter);
+    currentPointsLimit = Number.isSafeInteger(draft.pointsLimit) && draft.pointsLimit > 0
+      ? draft.pointsLimit
+      : 2000;
+    customPointsLimitEl.value = String(currentPointsLimit);
+    currentRosterNotes = typeof draft.rosterNotes === "string" ? draft.rosterNotes : "";
+
+    const assignedEnhancements = new Set();
+    currentRoster = draft.units.reduce((restored, savedItem, index) => {
+      const unit = masterUnits.find(option => option.id === savedItem.unitId);
+      if (!unit || !isUnitAvailableForChapter(unit.id, currentChapter)) return restored;
+
+      const canBeWarlord = unit.role === "HQ" || unit.canBeWarlord === true;
+      const canTakeEnhancement = unit.role === "HQ" && !unit.isEpicHero;
+      const enhancement = canTakeEnhancement && savedItem.enhancement
+        ? detachments[currentDetachment].enhancements.find(option =>
+          option.name === savedItem.enhancement.name && !assignedEnhancements.has(option.name)
+        )
+        : null;
+      if (enhancement) assignedEnhancements.add(enhancement.name);
+
+      restored.push({
+        instanceId: typeof savedItem.instanceId === "string" && savedItem.instanceId
+          ? savedItem.instanceId
+          : "draft_" + Date.now() + "_" + index,
+        unitId: unit.id,
+        name: unit.name,
+        role: unit.role,
+        points: unit.points,
+        canBeWarlord,
+        canTakeEnhancement,
+        chapter: unit.chapter || null,
+        isWarlord: canBeWarlord && savedItem.isWarlord === true,
+        enhancement: enhancement ? { ...enhancement } : null,
+        notes: typeof savedItem.notes === "string" ? savedItem.notes : "",
+        attachedToInstanceId: typeof savedItem.attachedToInstanceId === "string"
+          ? savedItem.attachedToInstanceId
+          : null
+      });
+      return restored;
+    }, []);
+
+    const firstWarlord = currentRoster.findIndex(item => item.isWarlord);
+    currentRoster.forEach((item, index) => {
+      item.isWarlord = item.canBeWarlord && index === firstWarlord;
+    });
+    sanitizeLeaderAttachments(currentRoster);
+    selectedInstanceId = currentRoster.some(item => item.instanceId === draft.selectedInstanceId)
+      ? draft.selectedInstanceId
+      : currentRoster.length > 0 ? currentRoster[0].instanceId : null;
+    showDraftStatus("Saved draft restored.");
+  } catch (error) {
+    currentRoster = [];
+    currentRosterNotes = "";
+    selectedInstanceId = null;
+    draftRestoreFailed = true;
+    showDraftStatus("Could not restore the saved draft: " + error.message, true);
+  }
+}
+
+function saveDraft() {
+  if (draftRestoreFailed) {
+    showDraftStatus("Saved draft could not be read. Use New Roster or import a roster to replace it.", true);
+    return;
+  }
+
+  try {
+    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({
+      version: 1,
+      chapter: currentChapter,
+      detachment: currentDetachment,
+      pointsLimit: currentPointsLimit,
+      rosterNotes: currentRosterNotes,
+      selectedInstanceId,
+      units: currentRoster.map(item => ({
+        instanceId: item.instanceId,
+        unitId: item.unitId,
+        isWarlord: item.isWarlord,
+        enhancement: item.enhancement,
+        notes: item.notes || "",
+        attachedToInstanceId: item.attachedToInstanceId || null
+      }))
+    }));
+    showDraftStatus("Draft saved in this browser.");
+  } catch (error) {
+    showDraftStatus("Could not save this draft: " + error.message, true);
+  }
 }
 
 function renderCatalog(unitArray) {
   catalogListEl.innerHTML = "";
-  unitArray.forEach(unit => {
+  const addedUnitIds = new Set(currentRoster.map(item => item.unitId));
+  const visibleUnits = unitArray
+    .filter(unit => !hideAddedUnitsEl.checked || !addedUnitIds.has(unit.id))
+    .sort((a, b) => {
+      if (catalogSortEl.value === "points-asc") {
+        return a.points - b.points || a.name.localeCompare(b.name);
+      }
+      if (catalogSortEl.value === "points-desc") {
+        return b.points - a.points || a.name.localeCompare(b.name);
+      }
+      return a.name.localeCompare(b.name);
+    });
+
+  if (visibleUnits.length === 0) {
+    catalogListEl.innerHTML = '<p class="placeholder-text">No units match these filters.</p>';
+    return;
+  }
+
+  visibleUnits.forEach(unit => {
     const div = document.createElement("div");
     div.className = "unit-card";
     div.addEventListener("click", () => addToRoster(unit));
@@ -612,6 +1010,12 @@ function renderCatalog(unitArray) {
         '<span>[' + cleanLabel + ']</span>' +
         '<strong>' + unit.points + ' pts</strong>' +
       '</div>';
+    if (addedUnitIds.has(unit.id)) {
+      const addedLabel = document.createElement("span");
+      addedLabel.className = "catalog-added-label";
+      addedLabel.textContent = "In roster";
+      div.appendChild(addedLabel);
+    }
     catalogListEl.appendChild(div);
   });
 }
@@ -719,13 +1123,21 @@ function changeChapter(event) {
   if (detachmentWillChange && currentRoster.some(item => item.enhancement)) {
     changeDetails.push("remove assigned enhancements because the current detachment is not available");
   }
-  if (changeDetails.length > 0 && !window.confirm(
-    "Switching chapters will " + changeDetails.join(" and ") + ". Continue?"
-  )) {
-    chapterSelectEl.value = currentChapter;
+  if (changeDetails.length > 0) {
+    requestAppConfirmation(
+      "Switching chapters will " + changeDetails.join(" and ") + ". Continue?",
+      "Switch chapter",
+      () => applyChapterChange(nextChapter, nextDetachment, detachmentWillChange),
+      () => { chapterSelectEl.value = currentChapter; }
+    );
     return;
   }
 
+  applyChapterChange(nextChapter, nextDetachment, detachmentWillChange);
+}
+
+function applyChapterChange(nextChapter, nextDetachment, detachmentWillChange) {
+  pushUndoSnapshot();
   currentChapter = nextChapter;
   applyChapterTheme(currentChapter);
   if (detachmentWillChange) {
@@ -736,6 +1148,7 @@ function changeChapter(event) {
     });
   }
   currentRoster = currentRoster.filter(item => isUnitAvailableForChapter(item.unitId, currentChapter));
+  sanitizeLeaderAttachments(currentRoster);
   populateDetachmentOptions();
   if (!currentRoster.some(item => item.instanceId === selectedInstanceId)) {
     selectedInstanceId = currentRoster.length > 0 ? currentRoster[0].instanceId : null;
@@ -756,6 +1169,7 @@ function selectGameMode(limit) {
     return;
   }
 
+  pushUndoSnapshot();
   currentPointsLimit = Number(limit);
   syncGameModeControls();
   updatePointsDisplay();
@@ -769,6 +1183,8 @@ function applyCustomLimit() {
     return;
   }
 
+  if (customLimit === currentPointsLimit) return;
+  pushUndoSnapshot();
   currentPointsLimit = customLimit;
   syncGameModeControls();
   updatePointsDisplay();
@@ -822,15 +1238,10 @@ function addToRoster(unit) {
   const existingError = document.getElementById("rosterStatusMonitor");
   if (existingError) existingError.style.display = "none";
 
-  const defaultSquadSize = unit.squadSizes && unit.squadSizes[0];
-  const unitPoints = defaultSquadSize
-    ? getSquadSizePoints(defaultSquadSize, getDefaultSelections(unit))
-    : unit.points;
-
   // Check 1: Selected game mode points limit
   let currentTotalPoints = currentRoster.reduce((sum, item) => sum + item.points + getEnhancementPoints(item), 0);
-  if (currentTotalPoints + unitPoints > currentPointsLimit) {
-    showInlineError("Adding " + unit.name + " (" + unitPoints + " pts) would exceed the " + currentPointsLimit + " points limit.");
+  if (currentTotalPoints + unit.points > currentPointsLimit) {
+    showInlineError("Adding " + unit.name + " (" + unit.points + " pts) would exceed the " + currentPointsLimit + " points limit.");
     return;
   }
 
@@ -850,18 +1261,20 @@ function addToRoster(unit) {
     }
   }
 
+  pushUndoSnapshot();
   // Process Add Unit
   const newInstance = {
     instanceId: "inst_" + Date.now() + Math.floor(Math.random() * 1000),
     unitId: unit.id,
-    name: defaultSquadSize ? getSquadSizeName(unit, defaultSquadSize.models) : unit.name,
+    name: unit.name,
     role: unit.role,
-    points: unitPoints,
-    ...(defaultSquadSize ? { models: defaultSquadSize.models } : {}),
+    points: unit.points,
     canBeWarlord: unit.role === "HQ" || unit.canBeWarlord === true,
     canTakeEnhancement: unit.role === "HQ" && !unit.isEpicHero,
     chapter: unit.chapter || null,
-    isWarlord: false
+    isWarlord: false,
+    notes: "",
+    attachedToInstanceId: null
   };
 
   currentRoster.push(newInstance);
@@ -872,7 +1285,11 @@ function addToRoster(unit) {
 
 function removeFromRoster(e, instanceId) {
   e.stopPropagation();
+  pushUndoSnapshot();
   currentRoster = currentRoster.filter(item => item.instanceId !== instanceId);
+  currentRoster.forEach(item => {
+    if (item.attachedToInstanceId === instanceId) item.attachedToInstanceId = null;
+  });
   if (selectedInstanceId === instanceId) {
     selectedInstanceId = null;
   }
@@ -890,6 +1307,8 @@ function updateWarlord(instanceId, isWarlord) {
   const selectedItem = currentRoster.find(item => item.instanceId === instanceId);
   if (!selectedItem || !selectedItem.canBeWarlord) return;
 
+  if (selectedItem.isWarlord === isWarlord) return;
+  pushUndoSnapshot();
   currentRoster.forEach(item => {
     if (item.instanceId === instanceId) {
       item.isWarlord = isWarlord;
@@ -907,12 +1326,21 @@ function changeDetachment(event) {
     detachmentSelectEl.value = currentDetachment;
     return;
   }
-  if (currentRoster.some(item => item.enhancement) &&
-      !window.confirm("Changing detachments will remove assigned enhancements. Continue?")) {
-    detachmentSelectEl.value = currentDetachment;
+  if (currentRoster.some(item => item.enhancement)) {
+    requestAppConfirmation(
+      "Changing detachments will remove assigned enhancements. Continue?",
+      "Change detachment",
+      () => applyDetachmentChange(nextDetachment),
+      () => { detachmentSelectEl.value = currentDetachment; }
+    );
     return;
   }
 
+  applyDetachmentChange(nextDetachment);
+}
+
+function applyDetachmentChange(nextDetachment) {
+  pushUndoSnapshot();
   currentDetachment = nextDetachment;
   updateDetachmentInfo();
   currentRoster.forEach(item => {
@@ -928,6 +1356,8 @@ function updateEnhancement(instanceId, enhancementName) {
 
   const enhancement = detachments[currentDetachment].enhancements.find(option => option.name === enhancementName);
   if (!enhancementName) {
+    if (!item.enhancement) return;
+    pushUndoSnapshot();
     item.enhancement = null;
   } else if (!enhancement) {
     showInlineError("That enhancement is not available for the selected detachment.");
@@ -947,6 +1377,7 @@ function updateEnhancement(instanceId, enhancementName) {
     renderConfigurator();
     return;
   } else {
+    pushUndoSnapshot();
     item.enhancement = { ...enhancement };
   }
 
@@ -956,52 +1387,6 @@ function updateEnhancement(instanceId, enhancementName) {
 
 function getEnhancementPoints(item) {
   return item.enhancement ? item.enhancement.points : 0;
-}
-
-function getSquadSizePoints(squadSize, selections = {}) {
-  for (const [selectionKey, pointOptions] of Object.entries(squadSize.pointsBySelection || {})) {
-    const selectedOption = pointOptions[selections[selectionKey]];
-    if (selectedOption !== undefined) return selectedOption;
-  }
-  return squadSize.points;
-}
-
-function getDefaultSelections(unit) {
-  return Object.fromEntries(
-    Object.entries(unit.wargear || {}).map(([key, options]) => [key, options[0]])
-  );
-}
-
-function getSquadSizeName(unit, models) {
-  const baseName = unit.name.replace(/\s\(\d+\s+models?\)$/, "");
-  const modelLabel = models === 1 ? "model" : "models";
-  return baseName + " (" + models + " " + modelLabel + ")";
-}
-
-function updateSquadSize(instanceId, modelCount) {
-  const item = currentRoster.find(rosterItem => rosterItem.instanceId === instanceId);
-  const unit = item && masterUnits.find(unitOption => unitOption.id === item.unitId);
-  const squadSize = unit && unit.squadSizes &&
-    unit.squadSizes.find(option => option.models === Number(modelCount));
-  if (!item || !unit || !squadSize) return;
-
-  const nextPoints = getSquadSizePoints(squadSize, getDefaultSelections(unit));
-  const currentTotal = currentRoster.reduce(
-    (sum, rosterItem) => sum + rosterItem.points + getEnhancementPoints(rosterItem),
-    0
-  );
-  if (currentTotal - item.points + nextPoints > currentPointsLimit) {
-    showInlineError("Changing " + unit.name + " to " + squadSize.models + " models would exceed the " +
-      currentPointsLimit + " points limit.");
-    renderConfigurator();
-    return;
-  }
-
-  item.models = squadSize.models;
-  item.points = nextPoints;
-  item.name = getSquadSizeName(unit, squadSize.models);
-  renderRoster();
-  renderConfigurator();
 }
 
 function renderRoster() {
@@ -1018,6 +1403,7 @@ function renderRoster() {
       const isSelected = item.instanceId === selectedInstanceId;
       const div = document.createElement("div");
       div.className = "roster-item" + (isSelected ? " selected" : "");
+      div.dataset.instanceId = item.instanceId;
       div.addEventListener("click", () => selectRosterItem(item.instanceId));
 
       div.innerHTML = 
@@ -1029,6 +1415,31 @@ function renderRoster() {
           (item.canBeWarlord ? '<label class="warlord-toggle"><input type="checkbox" class="warlord-checkbox"' + (item.isWarlord ? ' checked' : '') + '> Warlord</label>' : '') +
           '<button class="btn-danger remove-btn">Delete</button>' +
         '</div>';
+      if (item.notes) {
+        const notePreview = document.createElement("p");
+        notePreview.className = "roster-item-note";
+        notePreview.textContent = item.notes;
+        div.appendChild(notePreview);
+      }
+        const attachments = currentRoster.filter(rosterItem =>
+          rosterItem.attachedToInstanceId === item.instanceId
+        );
+        if (item.attachedToInstanceId) {
+          const bodyguard = currentRoster.find(rosterItem =>
+            rosterItem.instanceId === item.attachedToInstanceId
+          );
+          if (bodyguard) {
+            const summary = document.createElement("p");
+            summary.className = "attachment-summary";
+            summary.textContent = "Attached to: " + bodyguard.name;
+            div.appendChild(summary);
+          }
+        } else if (attachments.length > 0) {
+          const summary = document.createElement("p");
+          summary.className = "attachment-summary";
+          summary.textContent = "Led by: " + attachments.map(leader => leader.name).join(", ");
+          div.appendChild(summary);
+        }
       
       const warlordCheckbox = div.querySelector(".warlord-checkbox");
       if (warlordCheckbox) {
@@ -1036,6 +1447,10 @@ function renderRoster() {
         warlordCheckbox.addEventListener("change", e => updateWarlord(item.instanceId, e.target.checked));
       }
       div.querySelector(".remove-btn").addEventListener("click", (e) => removeFromRoster(e, item.instanceId));
+      const printedNote = document.createElement("p");
+      printedNote.className = "print-only";
+      printedNote.textContent = item.notes ? "Note: " + item.notes : "";
+      div.appendChild(printedNote);
       rosterListEl.appendChild(div);
     });
   }
@@ -1043,7 +1458,16 @@ function renderRoster() {
   ptsTotalEl.textContent = totalPts;
   ptsTotalEl.className = totalPts > currentPointsLimit ? "points-alert" : "points-good";
   unitTotalEl.textContent = currentRoster.length;
+  currentArmySummaryEl.textContent = currentRoster.length + " units | " +
+    totalPts + " / " + currentPointsLimit + " pts";
   updateRosterRequirements(totalPts);
+  printRosterMetaEl.textContent = chapters[currentChapter] + " | " +
+    detachments[currentDetachment].name + " | " + totalPts + " / " +
+    currentPointsLimit + " points | " + currentRoster.length + " units";
+  rosterNotesEl.value = currentRosterNotes;
+  printRosterNotesEl.textContent = currentRosterNotes ? "Roster notes: " + currentRosterNotes : "";
+  filterUnits();
+  saveDraft();
 }
 
 function validateRoster(totalPoints = currentRoster.reduce(
@@ -1063,24 +1487,97 @@ function validateRoster(totalPoints = currentRoster.reduce(
   return errors;
 }
 
+function getRosterWarnings() {
+  const warnings = [];
+  const counts = new Map();
+  currentRoster.forEach(item => counts.set(item.unitId, (counts.get(item.unitId) || 0) + 1));
+
+  counts.forEach((count, unitId) => {
+    const unit = masterUnits.find(option => option.id === unitId);
+    if (!unit) return;
+    const maximum = unit.isEpicHero ? 1 : unit.role === "Battleline" ? 6 : 3;
+    if (count > maximum) {
+      warnings.push(unit.name + " appears " + count + " times (listed limit: " + maximum + ").");
+    } else if (count > 1) {
+      warnings.push(unit.name + " is repeated; repeated-unit points tiers are not modeled.");
+    }
+  });
+
+  currentRoster.forEach(item => {
+    if (!isUnitAvailableForChapter(item.unitId, currentChapter)) {
+      warnings.push(item.name + " is not available for " + chapters[currentChapter] + ".");
+    }
+  });
+
+  const enhancements = currentRoster.filter(item => item.enhancement);
+  if (enhancements.length > 3) {
+    warnings.push("The roster has more than 3 enhancements.");
+  }
+  const enhancementCounts = new Map();
+  enhancements.forEach(item => {
+    enhancementCounts.set(item.enhancement.name, (enhancementCounts.get(item.enhancement.name) || 0) + 1);
+  });
+  enhancementCounts.forEach((count, name) => {
+    if (count > 1) warnings.push(name + " is assigned more than once.");
+  });
+
+  return [...new Set(warnings)];
+}
+
 function updateRosterRequirements(totalPoints) {
   const errors = validateRoster(totalPoints);
+  const warnings = getRosterWarnings();
   rosterRequirementsEl.classList.toggle("has-errors", errors.length > 0);
+  rosterRequirementsEl.classList.toggle("has-warnings", errors.length === 0 && warnings.length > 0);
   rosterRequirementsEl.innerHTML = "";
-  if (errors.length === 0) {
-    rosterRequirementsEl.textContent = "Requirements met: one Warlord and within the points limit.";
-    return;
-  }
-
   const heading = document.createElement("strong");
-  heading.textContent = "Requirements to export:";
+  heading.textContent = "Roster checks:";
   const list = document.createElement("ul");
-  errors.forEach(error => {
+  list.className = "check-list";
+  const addCheck = (text, status) => {
     const item = document.createElement("li");
-    item.textContent = error;
+    item.textContent = text;
+    item.className = status;
     list.appendChild(item);
-  });
+  };
+  const warlordCount = currentRoster.filter(item => item.isWarlord && item.canBeWarlord).length;
+  const chapterWarnings = warnings.filter(warning => warning.includes(" is not available for "));
+  const duplicateWarnings = warnings.filter(warning =>
+    warning.includes(" appears ") || warning.includes(" is repeated;")
+  );
+  const otherWarnings = warnings.filter(warning =>
+    !chapterWarnings.includes(warning) && !duplicateWarnings.includes(warning)
+  );
+
+  addCheck(
+    warlordCount === 1 ? "Warlord: exactly one selected." : errors[0] || "Warlord: select one eligible unit.",
+    warlordCount === 1 ? "check-pass" : "check-error"
+  );
+  addCheck(
+    totalPoints <= currentPointsLimit
+      ? "Points: " + totalPoints + " / " + currentPointsLimit + "."
+      : "Points: " + totalPoints + " exceeds the " + currentPointsLimit + " limit.",
+    totalPoints <= currentPointsLimit ? "check-pass" : "check-error"
+  );
+  addCheck(
+    chapterWarnings.length === 0
+      ? "Chapter: all selected units are available."
+      : "Chapter: " + chapterWarnings.join(" "),
+    chapterWarnings.length === 0 ? "check-pass" : "check-warning"
+  );
+  addCheck(
+    duplicateWarnings.length === 0
+      ? "Duplicates: within listed limits."
+      : "Duplicates: " + duplicateWarnings.join(" "),
+    duplicateWarnings.length === 0 ? "check-pass" : "check-warning"
+  );
+  otherWarnings.forEach(warning => addCheck(warning, "check-warning"));
   rosterRequirementsEl.append(heading, list);
+
+  const disclaimer = document.createElement("small");
+  disclaimer.className = "check-disclaimer";
+  disclaimer.textContent = "Helpful checks only; this does not confirm full rules legality.";
+  rosterRequirementsEl.appendChild(disclaimer);
 }
 
 function addInfoText(parent, tagName, text, className) {
@@ -1098,13 +1595,51 @@ function renderRelativeInfo(item) {
   }
 
   addInfoText(relativeInfoContentEl, "h3", item.name);
-  addInfoText(relativeInfoContentEl, "p", "Role: " + item.role + " | Cost: " + item.points + " pts.");
+  addInfoText(relativeInfoContentEl, "p", "Role: " + item.role + " | Base cost: " + item.points + " pts.");
   const unitDescription = unitInfo[item.unitId];
   addInfoText(
     relativeInfoContentEl,
     "p",
-    unitDescription || "This unit's special rules are not reproduced here. Check its current datasheet for abilities and exact profiles."
+    unitDescription || "This unit's special rules are not reproduced here. Check its current datasheet for abilities and rules."
   );
+
+  const notesField = document.createElement("div");
+  notesField.className = "unit-notes-field";
+  const notesLabel = document.createElement("label");
+  notesLabel.textContent = "Unit notes";
+  const notesInput = document.createElement("textarea");
+  notesInput.rows = 2;
+  notesInput.placeholder = "Add a note for this unit...";
+  notesInput.value = item.notes || "";
+  notesInput.addEventListener("focus", beginTextEdit);
+  notesInput.addEventListener("blur", finishTextEdit);
+  notesInput.addEventListener("input", () => {
+    item.notes = notesInput.value;
+    const printedNote = rosterListEl.querySelector(
+      '[data-instance-id="' + item.instanceId + '"] .print-only'
+    );
+    if (printedNote) printedNote.textContent = item.notes ? "Note: " + item.notes : "";
+    let notePreview = rosterListEl.querySelector(
+      '[data-instance-id="' + item.instanceId + '"] .roster-item-note'
+    );
+    if (item.notes && !notePreview) {
+      notePreview = document.createElement("p");
+      notePreview.className = "roster-item-note";
+      rosterListEl.querySelector('[data-instance-id="' + item.instanceId + '"]').appendChild(notePreview);
+    }
+    if (notePreview) {
+      notePreview.textContent = item.notes;
+      notePreview.hidden = !item.notes;
+    }
+    saveDraft();
+  });
+  notesLabel.appendChild(notesInput);
+  notesField.appendChild(notesLabel);
+  const printedNote = document.createElement("p");
+  printedNote.className = "print-only";
+  printedNote.textContent = item.notes ? "Unit note: " + item.notes : "";
+  notesField.appendChild(printedNote);
+  relativeInfoContentEl.appendChild(notesField);
 
   if (item.enhancement) {
     addInfoText(relativeInfoContentEl, "h3", "Enhancement: " + item.enhancement.name);
@@ -1122,7 +1657,7 @@ function renderConfigurator() {
 
   const activeItem = currentRoster.find(i => i.instanceId === selectedInstanceId);
   if (!activeItem) {
-    configuratorWorkspaceEl.innerHTML = '<p class="placeholder-text">Select an active unit to configure its squad size or assign an enhancement.</p>';
+    configuratorWorkspaceEl.innerHTML = '<p class="placeholder-text">Select an active unit to assign an enhancement.</p>';
     renderRelativeInfo(null);
     return;
   }
@@ -1135,37 +1670,9 @@ function renderConfigurator() {
   configuratorWorkspaceEl.appendChild(title);
   renderRelativeInfo(activeItem);
 
-  const unit = masterUnits.find(unitOption => unitOption.id === activeItem.unitId);
-  if (unit && unit.squadSizes && unit.squadSizes.length > 1) {
-    const squadSizeDiv = document.createElement("div");
-    squadSizeDiv.className = "config-option";
-
-    const squadSizeLabel = document.createElement("label");
-    squadSizeLabel.innerText = "SQUAD SIZE";
-
-    const squadSizeSelect = document.createElement("select");
-    squadSizeSelect.setAttribute("aria-label", "Squad size");
-    unit.squadSizes.forEach(squadSize => {
-      const points = getSquadSizePoints(squadSize, getDefaultSelections(unit));
-      const option = new Option(
-        squadSize.models + " models (" + points + " pts)",
-        String(squadSize.models)
-      );
-      option.selected = activeItem.models === squadSize.models;
-      squadSizeSelect.add(option);
-    });
-    squadSizeSelect.addEventListener("change", event => {
-      updateSquadSize(activeItem.instanceId, event.target.value);
-    });
-
-    squadSizeDiv.appendChild(squadSizeLabel);
-    squadSizeDiv.appendChild(squadSizeSelect);
-    configuratorWorkspaceEl.appendChild(squadSizeDiv);
-  }
-
   if (activeItem.canTakeEnhancement) {
     const enhancementDiv = document.createElement("div");
-    enhancementDiv.className = "config-option";
+    enhancementDiv.className = "enhancement-option";
 
     const enhancementLabel = document.createElement("label");
     enhancementLabel.innerText = "ENHANCEMENT (" + detachments[currentDetachment].name.toUpperCase() + ")";
@@ -1185,20 +1692,136 @@ function renderConfigurator() {
     configuratorWorkspaceEl.appendChild(enhancementDiv);
   }
 
+  renderLeaderAttachment(activeItem);
 }
 
-function clearRoster() {
+function renderLeaderAttachment(leader) {
+  if (!leader.canBeWarlord || leader.role !== "HQ") return;
+
+  const eligibility = leaderEligibility[leader.unitId];
+  if (!eligibility) return;
+
+  const section = document.createElement("div");
+  section.className = "leader-attachment";
+  const label = document.createElement("label");
+  label.textContent = "Leader attachment";
+  section.appendChild(label);
+
+  const select = document.createElement("select");
+  select.setAttribute("aria-label", "Attach leader to unit");
+  select.add(new Option("No attached unit", ""));
+  const eligibleUnits = currentRoster.filter(item =>
+    item.instanceId !== leader.instanceId &&
+    canAttachLeaderToBodyguard(
+      leader,
+      item,
+      currentRoster.filter(other =>
+        other !== leader && other.attachedToInstanceId === item.instanceId
+      )
+    )
+  );
+  eligibleUnits.forEach(item => {
+    select.add(new Option(item.name, item.instanceId));
+  });
+  select.value = leader.attachedToInstanceId || "";
+  select.addEventListener("change", event => updateLeaderAttachment(leader.instanceId, event.target.value));
+  section.appendChild(select);
+  const note = document.createElement("small");
+  note.textContent = "Eligibility is based on the community-maintained 10th-edition datasheet index and may not reflect every current datasheet or FAQ. Verify the official rules before play. A second Leader is offered only for listed exceptions; Captain pairings requiring untracked wargear are omitted.";
+  const indexLink = document.createElement("a");
+  indexLink.href = "https://wahapedia.ru/wh40k10ed/factions/space-marines/";
+  indexLink.target = "_blank";
+  indexLink.rel = "noopener noreferrer";
+  indexLink.textContent = "Datasheet index";
+  note.appendChild(document.createTextNode(" "));
+  note.appendChild(indexLink);
+  const sourceLink = document.createElement("a");
+  sourceLink.href = "https://www.warhammer-community.com/en-gb/downloads/warhammer-40000/";
+  sourceLink.target = "_blank";
+  sourceLink.rel = "noopener noreferrer";
+  sourceLink.textContent = "Official rules and updates";
+  note.appendChild(document.createTextNode(" "));
+  note.appendChild(sourceLink);
+  section.appendChild(note);
+  configuratorWorkspaceEl.appendChild(section);
+}
+
+function updateLeaderAttachment(leaderInstanceId, bodyguardInstanceId) {
+  const leader = currentRoster.find(item => item.instanceId === leaderInstanceId);
+  if (!leader || !leaderEligibility[leader.unitId]) return;
+
+  const bodyguard = bodyguardInstanceId
+    ? currentRoster.find(item => item.instanceId === bodyguardInstanceId)
+    : null;
+  const alreadyAttached = bodyguard
+    ? currentRoster.filter(item =>
+      item !== leader && item.attachedToInstanceId === bodyguard.instanceId
+    )
+    : [];
+  if (bodyguard && !canAttachLeaderToBodyguard(leader, bodyguard, alreadyAttached)) {
+    showInlineError("That unit is not available for this leader attachment.");
+    renderConfigurator();
+    return;
+  }
+
+  if ((leader.attachedToInstanceId || "") === (bodyguardInstanceId || "")) return;
+  pushUndoSnapshot();
+  leader.attachedToInstanceId = bodyguard ? bodyguard.instanceId : null;
+  renderRoster();
+  renderConfigurator();
+}
+
+function startNewRoster() {
+  const hasRosterState = currentRoster.length > 0 || currentRosterNotes || currentChapter !== "codex" ||
+    currentDetachment !== getDefaultDetachmentForChapter("codex") || currentPointsLimit !== 2000;
+  if (hasRosterState) {
+    requestAppConfirmation(
+      "Start a new roster? This will replace the current saved draft.",
+      "Start new roster",
+      () => resetRoster(hasRosterState)
+    );
+    return;
+  }
+
+  resetRoster(false);
+}
+
+function resetRoster(hasRosterState) {
+  if (hasRosterState) pushUndoSnapshot();
   currentRoster = [];
+  currentRosterNotes = "";
   selectedInstanceId = null;
+  draftRestoreFailed = false;
+  currentChapter = "codex";
+  currentDetachment = getDefaultDetachmentForChapter(currentChapter);
+  currentPointsLimit = 2000;
+  searchBarEl.value = "";
+  activeRoleFilter = "all";
+  document.querySelectorAll(".filter-btn").forEach(button => {
+    button.classList.toggle("active", button.dataset.role === "all");
+  });
+  catalogSortEl.value = "name";
+  hideAddedUnitsEl.checked = false;
+  chapterSelectEl.value = currentChapter;
+  applyChapterTheme(currentChapter);
+  populateDetachmentOptions();
+  updateDetachmentInfo();
+  customPointsLimitEl.value = "1500";
+  syncGameModeControls();
+  pointsLimitEl.textContent = currentPointsLimit;
+  rosterNotesEl.value = "";
   renderRoster();
   renderConfigurator();
 }
 
 function exportData(type) {
-  if (currentRoster.length === 0) return alert("Roster is completely empty.");
+  if (currentRoster.length === 0) {
+    showAppMessage("Roster is completely empty.");
+    return;
+  }
   const validationErrors = validateRoster();
   if (validationErrors.length > 0) {
-    alert("Cannot export this roster:\n\n" + validationErrors.join("\n"));
+    showAppMessage("Cannot export this roster:\n\n" + validationErrors.join("\n"));
     return;
   }
 
@@ -1207,12 +1830,21 @@ function exportData(type) {
       detachment: currentDetachment,
       chapter: currentChapter,
       pointsLimit: currentPointsLimit,
-      units: currentRoster.map(unit => {
-        const exportedUnit = { ...unit };
-        delete exportedUnit.selections;
-        delete exportedUnit.wargearOptions;
-        return exportedUnit;
-      })
+      rosterNotes: currentRosterNotes,
+      units: currentRoster.map(item => ({
+        instanceId: item.instanceId,
+        unitId: item.unitId,
+        name: item.name,
+        role: item.role,
+        points: item.points,
+        canBeWarlord: item.canBeWarlord,
+        canTakeEnhancement: item.canTakeEnhancement,
+        chapter: item.chapter,
+        isWarlord: item.isWarlord,
+        enhancement: item.enhancement,
+        notes: item.notes || "",
+        attachedToInstanceId: item.attachedToInstanceId || null
+      }))
     };
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportRoster, null, 2));
     const dlAnchorElem = document.createElement('a');
@@ -1232,9 +1864,15 @@ function exportData(type) {
       if (u.enhancement) {
         textOutput += "   - Enhancement: " + u.enhancement.name + " (" + enhancementPoints + " pts)\n";
       }
+      if (u.attachedToInstanceId) {
+        const bodyguard = currentRoster.find(item => item.instanceId === u.attachedToInstanceId);
+        if (bodyguard) textOutput += "   - Attached to: " + bodyguard.name + "\n";
+      }
+      if (u.notes) textOutput += "   - Note: " + u.notes + "\n";
       textOutput += "\n";
     });
     textOutput += "Total Army Cost: " + total + " points\n";
+    if (currentRosterNotes) textOutput += "\nRoster notes: " + currentRosterNotes + "\n";
 
     const dataStr = "data:text/plain;charset=utf-8," + encodeURIComponent(textOutput);
     const dlAnchorElem = document.createElement('a');
@@ -1253,6 +1891,8 @@ function importData(event) {
       const parsed = JSON.parse(e.target.result);
       const importedRoster = Array.isArray(parsed) ? parsed : parsed.units;
       if (Array.isArray(importedRoster)) {
+        pushUndoSnapshot();
+        draftRestoreFailed = false;
         currentChapter = Object.prototype.hasOwnProperty.call(chapters, parsed.chapter) ? parsed.chapter : currentChapter;
         chapterSelectEl.value = currentChapter;
         applyChapterTheme(currentChapter);
@@ -1269,22 +1909,15 @@ function importData(event) {
           syncGameModeControls();
           updatePointsDisplay();
         }
+        currentRosterNotes = !Array.isArray(parsed) && typeof parsed.rosterNotes === "string"
+          ? parsed.rosterNotes
+          : "";
         let enhancementCount = 0;
         const assignedEnhancements = new Set();
         currentRoster = importedRoster.map(item => {
-          const importedUnit = { ...item };
-          delete importedUnit.selections;
-          delete importedUnit.wargearOptions;
           const unit = masterUnits.find(unitOption => unitOption.id === item.unitId);
           const canBeWarlord = unit ? unit.role === "HQ" || unit.canBeWarlord === true : false;
           const canTakeEnhancement = Boolean(unit && unit.role === "HQ" && !unit.isEpicHero);
-          const namedModelCount = typeof item.name === "string"
-            ? Number((item.name.match(/\((\d+)\s+models?\)$/) || [])[1])
-            : NaN;
-          const requestedModelCount = Number.isSafeInteger(item.models) ? item.models : namedModelCount;
-          const squadSize = unit && unit.squadSizes &&
-            (unit.squadSizes.find(option => option.models === requestedModelCount) ||
-              unit.squadSizes.find(option => option.points === item.points));
           let enhancement = canTakeEnhancement && item.enhancement
             ? detachments[currentDetachment].enhancements.find(option => option.name === item.enhancement.name) || null
             : null;
@@ -1296,20 +1929,24 @@ function importData(event) {
             assignedEnhancements.add(enhancement.name);
           }
           return {
-            ...importedUnit,
-            ...(squadSize ? {
-              name: getSquadSizeName(unit, squadSize.models),
-              models: squadSize.models,
-              points: getSquadSizePoints(squadSize, getDefaultSelections(unit))
-            } : {}),
+            instanceId: item.instanceId,
+            unitId: item.unitId,
+            name: item.name,
+            role: item.role,
+            points: item.points,
             canBeWarlord,
             canTakeEnhancement,
             chapter: unit && unit.chapter || null,
             enhancement,
-            isWarlord: canBeWarlord && item.isWarlord === true
+            isWarlord: canBeWarlord && item.isWarlord === true,
+            notes: typeof item.notes === "string" ? item.notes : "",
+            attachedToInstanceId: typeof item.attachedToInstanceId === "string"
+              ? item.attachedToInstanceId
+              : null
           };
         });
         currentRoster = currentRoster.filter(item => isUnitAvailableForChapter(item.unitId, currentChapter));
+        sanitizeLeaderAttachments(currentRoster);
         const firstWarlord = currentRoster.findIndex(item => item.isWarlord);
         currentRoster.forEach((item, index) => {
           item.isWarlord = item.canBeWarlord && index === firstWarlord;
@@ -1318,10 +1955,12 @@ function importData(event) {
         renderRoster();
         renderConfigurator();
       } else {
-        alert("Malformed roster structure.");
+        showAppMessage("Malformed roster structure.");
       }
     } catch (err) {
-      alert("Failed to parse JSON file template.");
+      showAppMessage("Failed to parse JSON file template.");
+    } finally {
+      importFileEl.value = "";
     }
   };
   reader.readAsText(file[0]);
